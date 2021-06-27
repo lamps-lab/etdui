@@ -18,7 +18,7 @@ function handleDissertation(entry) {
         data: {
             dissertation_id: id
         },
-        success: function (data) {
+        success: function(data) {
             // If save is successful, change button to green and the text to
             // saved.
             $(elementId).toggleClass('saved');
@@ -45,7 +45,7 @@ function handleLike(entry) {
         data: {
             dissertation_id: id
         },
-        success: function (data) {
+        success: function(data) {
 
             console.log(data);
 
@@ -53,8 +53,7 @@ function handleLike(entry) {
                 // If the dissertation is liked, increment the number of
                 // likes.
                 likes = likes + 1;
-            }
-            else {
+            } else {
                 // If the dissertation is unliked, decrement the number of
                 // likes.
                 likes = likes - 1;
@@ -69,6 +68,9 @@ function handleLike(entry) {
     });
 }
 
+/**
+ * Calls handle search history PHP script.
+ */
 function handleSearchHistory() {
     var normalSearch = $('#search').val();
     var title = $('#title').val();
@@ -99,18 +101,23 @@ function handleSearchHistory() {
             end_date: endDate,
             url: searchURL
         },
-        success: function (data) {
+        success: function(data) {
             console.log(data);
+            // If search history is successfully saved or unsaved,
+            // toggle the save search history button.
             $('#save_history').toggleClass('saved-history');
             $('#save_history').toggleClass('save-history');
         }
     });
 }
 
+/**
+ * Delete the checked search history.
+ */
 function deleteCheckedHistory() {
     var searchIds = [];
 
-    $('.delete:checkbox:checked').each(function () {
+    $('.delete:checkbox:checked').each(function() {
         var checkboxId = '#' + $(this).attr('id');
         var divId = $(this).attr('id') + '-history';
 
@@ -121,7 +128,7 @@ function deleteCheckedHistory() {
                 handled: "handled",
                 url: $(this).val()
             },
-            success: function (data) {
+            success: function(data) {
                 $(checkboxId).hide();
                 $('div').find(`[data-value='${divId}']`).hide();
             }
@@ -147,19 +154,19 @@ function speechToText(micId, inputId) {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
     var speechRecognition = new SpeechRecognition();
 
-    speechRecognition.onstart = function () {
+    speechRecognition.onstart = function() {
         // When microphone is on, change the background to green.
         $(microphoneId).css('background', '#73EC21');
     }
 
-    speechRecognition.onspeechend = function () {
+    speechRecognition.onspeechend = function() {
         // If speech stops, stop the speech recognition and return
         // the button to its original color.
         speechRecognition.stop();
         $(microphoneId).css('background', '#00BFFF');
     }
 
-    speechRecognition.onresult = function (event) {
+    speechRecognition.onresult = function(event) {
         // Set the value in the search box.
         var transcript = event.results[0][0].transcript;
         searchBar.value = transcript;
@@ -169,6 +176,11 @@ function speechToText(micId, inputId) {
     speechRecognition.start();
 }
 
+/**
+ * Return suggested search results from the PHP script, and parse it
+ * into a JSON array that will be used for the autocomplete feature.
+ * @param {*} elementId 
+ */
 function suggestResults(elementId) {
 
     var input = document.getElementById(elementId).value;
@@ -179,7 +191,7 @@ function suggestResults(elementId) {
         data: {
             text: input
         },
-        success: function (data) {
+        success: function(data) {
 
             $('#' + elementId).autocomplete({
                 source: JSON.parse(data)
@@ -188,6 +200,10 @@ function suggestResults(elementId) {
     });
 }
 
+/**
+ * Call the add tag functionality in PHP.
+ * @param {*} figureId 
+ */
 function addTag(figureId) {
 
     var tag = $('#tag').val();
@@ -201,7 +217,7 @@ function addTag(figureId) {
                 tag: tag,
                 figure_id: figureId
             },
-            success: function (data) {
+            success: function(data) {
 
                 if (data == 1) {
                     $('#tag-error').text("The tag is already used.");
@@ -217,6 +233,10 @@ function addTag(figureId) {
     }
 }
 
+/**
+ * Calls remove tag functionality in the PHP script.
+ * @param {*} tagId 
+ */
 function removeTag(tagId) {
     $.ajax({
         type: "POST",
@@ -225,13 +245,18 @@ function removeTag(tagId) {
             handle: "removed",
             tag_id: tagId
         },
-        success: function (data) {
+        success: function(data) {
             $('#' + tagId).remove();
             $('#remove-' + tagId).remove();
         }
     });
 }
 
+/**
+ * Toggle the show more button and show more if show more has been clicked.
+ * Set to preview mode if show less has been clicked.
+ * @param {*} entry 
+ */
 function showMore(entry) {
     $('#show-more-' + entry).toggle();
     $('#preview-' + entry).toggle();
@@ -245,6 +270,12 @@ function showMore(entry) {
     }
 }
 
+/**
+ * Call the handle list item PHP script.
+ * @param {*} listId 
+ * @param {*} userId 
+ * @param {*} dissertationId 
+ */
 function handleListItem(listId, userId, dissertationId) {
     $.ajax({
         type: "POST",
@@ -255,14 +286,17 @@ function handleListItem(listId, userId, dissertationId) {
             user_id: userId,
             dissertation_id: dissertationId
         },
-        success: function (data) {
+        success: function(data) {
 
         }
     });
 }
 
+/**
+ * Call the delete list PHP script.
+ */
 function deleteList() {
-    $('.delete:checkbox:checked').each(function () {
+    $('.delete:checkbox:checked').each(function() {
         var checkboxId = '#' + $(this).attr('id');
         var formId = '#' + $(this).attr('id') + '-list';
 
@@ -273,7 +307,7 @@ function deleteList() {
                 delete: "delete",
                 id: $(this).val()
             },
-            success: function (data) {
+            success: function(data) {
                 $(checkboxId).hide();
                 $(formId).hide();
             }
