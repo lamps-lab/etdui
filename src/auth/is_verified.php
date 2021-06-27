@@ -12,4 +12,3 @@ if ($user->get_verified() == 0) {
     // If user is not verified, redirect user to resend verification page.
     echo "<script>window.location = '../../public/views/resend_verification.php';</script>";
 }
-

@@ -3,7 +3,7 @@ require '../../vendor/autoload.php';
 include '../../src/auth/redirect.php';
 include '../../src/auth/is_verified.php';
 include 'header.php';
-require_once '../../src/figure.php';
+require_once '../../src/dissertation.php';
 ?>
 
 <body>
@@ -17,7 +17,7 @@ require_once '../../src/figure.php';
 
         include '../../src/mysql_login.php';
 
-        $query = "SELECT * FROM user_figure_likes WHERE user='"
+        $query = "SELECT * FROM user_likes WHERE user='"
             . $user_id . "';";
 
         $results = $connection->query($query);
@@ -26,27 +26,30 @@ require_once '../../src/figure.php';
         $entry = 0;
 
         while ($row = $results->fetch_assoc()) {
-            $client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
+            $client = Elasticsearch\ClientBuilder::create()->build();
 
-            $figure = new Figure();
+            $dissertation = new Dissertation();
 
-            $figure->set_id($row['figure_id']);
+            $dissertation->set_id($row['dissertation_id']);
 
             $params = [
-                'index' => 'figures',
-                'id' => $figure->get_id()
+                'index' => 'dissertations',
+                'id' => $dissertation->get_id()
             ];
 
             $response = $client->get($params);
 
-            $figure->set_patent_id($response['_source']['patentID']);
-            $figure->set_description($response['_source']['description']);
-            $figure->set_figure_id($response['_source']['figid']);
-            $figure->set_object($response['_source']['object']);
-            $figure->set_aspect($response['_source']['aspect']);
-            $figure->set_text_reference($response['_source']['origreftext']);
+            $dissertation->set_title($response['_source']['title']);
+            $dissertation->set_author($response['_source']['contributor_author']);
+            $dissertation->set_publisher($response['_source']['publisher']);
+            $dissertation->set_date($response['_source']['date_issued']);
+            $dissertation->set_url($response['_source']['identifier_sourceurl']);
+            $abstract = $response['_source']['description_abstract'];
 
-            $figure->display_result($entry);
+            $preview = $dissertation->shorten_abstract($abstract);
+            $dissertation->set_abstract($preview);
+
+            $dissertation->result($entry);
 
             $entry += 1;
         }

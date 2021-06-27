@@ -1,27 +1,21 @@
 <?php
 
 require '../../vendor/autoload.php';
-include '../../constants.php';
 
-$client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
+$client = Elasticsearch\ClientBuilder::create()->build();
 
 if (isset($_POST['text'])) {
 
     $text = $_POST['text'];
 
     $query = $client->search([
-        'index' => 'figures',
+        'index' => 'dissertations',
         'size' => 10,
         'body' => [
             'query' => [
                 'bool' => [
                     'should' => [
-                        ['match' => ['description' => $text]],
-                        ['match' => ['object' => $text]],
-                        ['match' => ['aspect' => $text]],
-                        ['match' => ['figid' => $text]],
-                        ['match' => ['origreftext' => $text]],
-                        ['match' => ['patentID' => $text]],
+                        ['match' => ['title' => $text]],
                     ]
                 ]
             ]
@@ -37,7 +31,7 @@ if (isset($_POST['text'])) {
     $suggestions = [];
 
     foreach($results as $r) {
-        array_push($suggestions, $r['_source']['description']);
+        array_push($suggestions, $r['_source']['title']);
     }
 
     print json_encode($suggestions);

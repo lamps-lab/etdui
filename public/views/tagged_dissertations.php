@@ -1,44 +1,30 @@
 <?php
 
-
-require '../../vendor/autoload.php';
-include '../../src/auth/redirect.php';
-include '../../src/auth/is_verified.php';
-require_once '../../src/dissertation.php';
 include '../../src/mysql_login.php';
-
-
-if (!isset($_GET['list-id'])) {
-    echo "<script>window.location = '../../public/views/index.php';</script>";
-} else {
-    $list_name = $_GET['list-name'];
-    $list_id = $_GET['list-id'];
-}
-
+require '../../vendor/autoload.php';
+require_once '../../src/dissertation.php';
 include 'header.php';
+
+$tag = "";
+
+if (!isset($_GET['tag'])) {
+    header('Location: index.php');
+} else {
+
+    $query = "SELECT * FROM dissertation_tags WHERE name='"
+        . $_GET['tag'] . "';";
+
+    $results = $connection->query($query);
+}
 
 ?>
 
 <body>
     <?php include 'menu.php' ?>
     <div class="results">
-        <br>
-        <h1> <?php echo $list_name; ?> </h1><br>
-
-        <form action="../../src/elasticsearch/export_list.php" method="POST">
-        <input type="hidden" name="list-name" value= <?php echo $list_name ?> ></input>
-        <button class="search" type="submit" name="export" value= <?php echo $_GET['list-id'] ?> style="margin-right: 10px;">Export to JSON</button>
-        </form>
-
-        <br><br><br><br><br><br>
+    <br>
+        <h1><?php echo $_GET['tag'] ?></h1><br>
         <?php
-
-        $user_id = $_SESSION['user_id'];
-
-        $query = "SELECT * FROM user_dissertation_list_items WHERE list='" . $list_id . "';";
-
-        $results = $connection->query($query);
-
         $entry = 0;
 
         while ($row = $results->fetch_assoc()) {
@@ -46,7 +32,7 @@ include 'header.php';
 
             $dissertation = new Dissertation();
 
-            $dissertation->set_id($row['dissertation_id']);
+            $dissertation->set_id($row['dissertation']);
 
             $params = [
                 'index' => 'dissertations',
@@ -66,9 +52,7 @@ include 'header.php';
 
             $entry += 1;
         }
-
         ?>
-        <script src="../../public/js/searchFunctions.js"></script>
+    </div>
+    <script src="../../public/js/searchFunctions.js"></script>
 </body>
-
-</html>

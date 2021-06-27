@@ -17,5 +17,5 @@
 
 </head>
 <title>
-    Figure Search
+    ETD Search
 </title>

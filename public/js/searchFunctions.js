@@ -18,7 +18,7 @@ function handleDissertation(entry) {
         data: {
             dissertation_id: id
         },
-        success: function(data) {
+        success: function (data) {
             // If save is successful, change button to green and the text to
             // saved.
             $(elementId).toggleClass('saved');
@@ -43,9 +43,9 @@ function handleLike(entry) {
         type: "POST",
         url: "../../src/elasticsearch/handle_like.php",
         data: {
-            figure_id: id
+            dissertation_id: id
         },
-        success: function(data) {
+        success: function (data) {
 
             console.log(data);
 
@@ -54,7 +54,7 @@ function handleLike(entry) {
                 // likes.
                 likes = likes + 1;
             }
-            if (data == 0) {
+            else {
                 // If the dissertation is unliked, decrement the number of
                 // likes.
                 likes = likes - 1;
@@ -69,18 +69,17 @@ function handleLike(entry) {
     });
 }
 
-/**
- * Gets search history values from the frontend (HTML) and sends it to the 
- * backend PHP handle search script.
- */
 function handleSearchHistory() {
     var normalSearch = $('#search').val();
-    var patentId = $('#patent-id').val();
-    var textReference = $('#text-reference').val();
-    var figureId = $('#figure-id').val();
-    var description = $('#description').val();
-    var aspect = $('#aspect').val();
-    var object = $('#object').val();
+    var title = $('#title').val();
+    var author = $('#author').val();
+    var abstract = $('#abstract').val();
+    var publisher = $('#publisher').val();
+    var subject = $('#subject').val();
+    var department = $('#department').val();
+    var degree = $('#dgree').val();
+    var startDate = $('#start_date').val();
+    var endDate = $('#end_date').val();
     var searchURL = $('#url').text();
 
     $.ajax({
@@ -89,15 +88,18 @@ function handleSearchHistory() {
         data: {
             handled: "handled",
             normal_search: normalSearch,
-            patent_id: patentId,
-            text_reference: textReference,
-            figure_id: figureId,
-            description: description,
-            aspect: aspect,
-            object: object,
+            title: title,
+            author: author,
+            abstract: abstract,
+            publisher: publisher,
+            subject: subject,
+            department: department,
+            degree: degree,
+            beg_date: startDate,
+            end_date: endDate,
             url: searchURL
         },
-        success: function(data) {
+        success: function (data) {
             console.log(data);
             $('#save_history').toggleClass('saved-history');
             $('#save_history').toggleClass('save-history');
@@ -105,12 +107,10 @@ function handleSearchHistory() {
     });
 }
 
-/**
- * Call delete checked search history.
- */
 function deleteCheckedHistory() {
+    var searchIds = [];
 
-    $('.delete:checkbox:checked').each(function() {
+    $('.delete:checkbox:checked').each(function () {
         var checkboxId = '#' + $(this).attr('id');
         var divId = $(this).attr('id') + '-history';
 
@@ -121,35 +121,13 @@ function deleteCheckedHistory() {
                 handled: "handled",
                 url: $(this).val()
             },
-            success: function(data) {
+            success: function (data) {
                 $(checkboxId).hide();
                 $('div').find(`[data-value='${divId}']`).hide();
             }
         });
     });
-}
 
-/**
- * Call delete list PHP script.
- */
-function deleteList() {
-    $('.delete:checkbox:checked').each(function() {
-        var checkboxId = '#' + $(this).attr('id');
-        var formId = '#' + $(this).attr('id') + '-list';
-
-        $.ajax({
-            type: "POST",
-            url: "../../src/elasticsearch/handle_list.php",
-            data: {
-                delete: "delete",
-                id: $(this).val()
-            },
-            success: function(data) {
-                $(checkboxId).hide();
-                $(formId).hide();
-            }
-        });
-    });
 }
 
 /**
@@ -169,19 +147,19 @@ function speechToText(micId, inputId) {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
     var speechRecognition = new SpeechRecognition();
 
-    speechRecognition.onstart = function() {
+    speechRecognition.onstart = function () {
         // When microphone is on, change the background to green.
         $(microphoneId).css('background', '#73EC21');
     }
 
-    speechRecognition.onspeechend = function() {
+    speechRecognition.onspeechend = function () {
         // If speech stops, stop the speech recognition and return
         // the button to its original color.
         speechRecognition.stop();
         $(microphoneId).css('background', '#00BFFF');
     }
 
-    speechRecognition.onresult = function(event) {
+    speechRecognition.onresult = function (event) {
         // Set the value in the search box.
         var transcript = event.results[0][0].transcript;
         searchBar.value = transcript;
@@ -191,10 +169,6 @@ function speechToText(micId, inputId) {
     speechRecognition.start();
 }
 
-/**
- * Call suggest search results script.
- * @param {*} elementId 
- */
 function suggestResults(elementId) {
 
     var input = document.getElementById(elementId).value;
@@ -205,7 +179,7 @@ function suggestResults(elementId) {
         data: {
             text: input
         },
-        success: function(data) {
+        success: function (data) {
 
             $('#' + elementId).autocomplete({
                 source: JSON.parse(data)
@@ -214,19 +188,9 @@ function suggestResults(elementId) {
     });
 }
 
-/**
- * Call add tag PHP script.
- * @param {*} figureId 
- */
 function addTag(figureId) {
 
-    var tag = "";
-
-    if ($('#tag').val()) {
-        tag = $('#tag').val();
-    } else {
-        tag = $('#tag-' + figureId).val();
-    }
+    var tag = $('#tag').val();
 
     if (tag) {
         $.ajax({
@@ -237,7 +201,7 @@ function addTag(figureId) {
                 tag: tag,
                 figure_id: figureId
             },
-            success: function(data) {
+            success: function (data) {
 
                 if (data == 1) {
                     $('#tag-error').text("The tag is already used.");
@@ -253,10 +217,6 @@ function addTag(figureId) {
     }
 }
 
-/**
- * Script that calls remove tag function in PHP script.
- * @param {*} tagId 
- */
 function removeTag(tagId) {
     $.ajax({
         type: "POST",
@@ -265,20 +225,27 @@ function removeTag(tagId) {
             handle: "removed",
             tag_id: tagId
         },
-        success: function(data) {
+        success: function (data) {
             $('#' + tagId).remove();
             $('#remove-' + tagId).remove();
         }
     });
 }
 
-/**
- * Calls the handle list item PHP script.
- * @param {*} listId 
- * @param {*} userId 
- * @param {*} figureId 
- */
-function handleListItem(listId, userId, figureId) {
+function showMore(entry) {
+    $('#show-more-' + entry).toggle();
+    $('#preview-' + entry).toggle();
+
+    if ($('#show-more-button-' + entry).text() === "Show More") {
+        $('#show-more-button-' + entry).text("Show Less");
+        $('#dots-' + entry).hide();
+    } else {
+        $('#show-more-button-' + entry).text("Show More");
+        $('#dots-' + entry).show();
+    }
+}
+
+function handleListItem(listId, userId, dissertationId) {
     $.ajax({
         type: "POST",
         url: "../../src/elasticsearch/handle_list_item.php",
@@ -286,143 +253,30 @@ function handleListItem(listId, userId, figureId) {
             handle: "handled",
             list_id: listId,
             user_id: userId,
-            figure_id: figureId
+            dissertation_id: dissertationId
         },
-        success: function(data) {
+        success: function (data) {
 
         }
     });
 }
 
-var counter = 0;
+function deleteList() {
+    $('.delete:checkbox:checked').each(function () {
+        var checkboxId = '#' + $(this).attr('id');
+        var formId = '#' + $(this).attr('id') + '-list';
 
-/**
- * Appends the element to the list.
- * @param {*} figureId 
- */
-function appendAddListElement(figureId) {
-    $('#add-to-list-modal-' + figureId).append("<div class='modal-header' id='add-list-" + counter + "'><slot>" +
-        "List Name: <input type='text' id='name-" + counter + "' />" +
-        "<button type='button' onClick='addList(" + counter + "," + figureId + ")' class='btn btn-primary'>Add List</button>" +
-        "</slot>");
-
-    counter++;
-}
-
-/**
- * Calls PHP handle list script to add a list entry.
- * @param {*} listEntryNum 
- * @param {*} figureId 
- */
-function addList(listEntryNum, figureId) {
-    listName = $('#name-' + listEntryNum).val();
-
-    $.ajax({
-        type: "POST",
-        url: "../../src/elasticsearch/handle_list.php",
-        data: {
-            name2: listName,
-        },
-        success: function(data) {
-            listObject = JSON.parse(data);
-
-            var newListElement = "<div class='modal-header'><slot>" + listName +
-                "<input type='checkbox' onclick='handleListItem(\"" + listObject.listId + "\", \"" + listObject.userId + "\", \"" + figureId + "\")'></slot></div>";
-
-            $('#add-list-' + listEntryNum).remove();
-            $('.modal-body').append(newListElement);
-
-        }
+        $.ajax({
+            type: "POST",
+            url: "../../src/elasticsearch/handle_list.php",
+            data: {
+                delete: "delete",
+                id: $(this).val()
+            },
+            success: function (data) {
+                $(checkboxId).hide();
+                $(formId).hide();
+            }
+        });
     });
-}
-
-/**
- * If the checkbox for segmented correctly is checked. If it is not, append an
- * input element that prompts the user to enter the correct number of subfigures.
- */
-function checkSegmentedCorrectly() {
-    if ($("#yes-segmented-correctly").is(":checked")) {
-        // If "yes" radio button is selected, empty the div for entering
-        // correct labels.
-        $(".segmented-correctly").empty();
-    } else {
-        if (!$("#num-segmented").length) {
-            var enterNumSegments = "<b>How many subfigures are in the original figure?" +
-                "<input type='text' id='num-segmented' name='num-segmented'/>";
-
-            $(".segmented-correctly").append(enterNumSegments);
-        }
-    }
-}
-
-/**
- * If the checkbox for labeled correctly is check, prompt user to enter correct labels.
- * @param {*} id 
- */
-function checkLabeledCorrectly(id) {
-
-    var enterLabels = "";
-    var size = 0;
-
-    if ($("#yes-" + id).is(":checked")) {
-        // If "yes" radio button is selected, empty the div for entering
-        // correct labels.
-        $(".enter-correct-labels-" + id).empty();
-    } else {
-        if (!$("#" + id).length) {
-            size = $('#num-segmented').val();
-
-            if (id == "label-subfigures") {
-                var enterLabels = "<b> Type the correct labels of subfigures, from low to high </b><br>";
-
-                for (let i = 0; i < size; i++) {
-                    enterLabels = enterLabels + "<input type='text' id='" + id + "-" + i + "' /><br>";
-                }
-
-                $(".enter-correct-labels-" + id).append(enterLabels);
-
-                var allEnterLabels = "<input type='hidden' id='" + id + "' name='" + id + "' />";
-                $(".enter-correct-labels-" + id).append(allEnterLabels);
-            }
-
-            if (id == "label-objects") {
-                var enterLabels = "<b> Type the correct object for each subfigure. </b><br>";
-
-                enterLabels = enterLabels + "<input type='text' id='" + id + "' name='" + id + "' />";
-                $(".enter-correct-labels-" + id).append(enterLabels);
-            }
-
-            if (id == "label-aspects") {
-                var enterLabels = "<b> Type the correct aspect for each subfigure. </b><br>";
-
-                for (let i = 0; i < size; i++) {
-                    enterLabels = enterLabels + "<input type='text' id='" + id + "-" + i + "' /><br>";
-                }
-
-                $(".enter-correct-labels-" + id).append(enterLabels);
-
-                var allEnterLabels = "<input type='hidden' id='" + id + "' name='" + id + "' />";
-                $(".enter-correct-labels-" + id).append(allEnterLabels);
-            }
-        }
-    }
-}
-
-function combineLabels() {
-
-    var numSegmented = $('#num-segmented').val();
-    var subfigureLabels = "";
-    var aspectLabels = "";
-
-    for (let i = 0; i < numSegmented; i++) {
-        subfigureLabels += $('#label-subfigures-' + i).val() + ";";
-        aspectLabels += $('#label-aspects-' + i).val() + ";";
-    }
-
-    $('#label-subfigures').val(subfigureLabels);
-    $('#label-aspects').val(aspectLabels);
-}
-
-function backToResults(previousURL) {
-    window.location.replace("https://" + previousURL);
 }

@@ -2,56 +2,88 @@
 
 require '../../vendor/autoload.php';
 
-function no_inputs($patent_id, $text_reference, $figure_id, $description, $aspect, $object)
+function no_inputs($title, $author, $abstract, $publisher, $subject, $department, $degree, $beg_date, $end_date)
 {
     $all_empty = true;
 
     // If any of the inputs are filled in, set the all empty boolean
     // to false.
 
-    if (!empty($patent_id)) {
+    if (!empty($title)) {
         $all_empty = false;
     }
 
-    if (!empty($text_reference)) {
+    if (!empty($author)) {
         $all_empty = false;
     }
 
-    if (!empty($figure_id)) {
+    if (!empty($abstract)) {
         $all_empty = false;
     }
 
-    if (!empty($description)) {
+    if (!empty($publisher)) {
         $all_empty = false;
     }
 
-    if (!empty($aspect)) {
+    if (!empty($subject)) {
         $all_empty = false;
     }
 
-    if (!empty($object)) {
+    if (!empty($department)) {
         $all_empty = false;
+    }
+
+    if (!empty($degree)) {
+        $all_empty = false;
+    }
+
+    if (!empty($beg_date)) {
+        if (!empty($end_date)) {
+            $all_empty = false;
+        } else {
+            echo "<script> alert('Both date ranges must be filled.');
+            window.location = '../../src/elasticsearch/results.php'; </script>";
+        }
+    }
+
+    if (!empty($end_date)) {
+        if (!empty($beg_date)) {
+            $all_empty = false;
+        } else {
+            echo "<script> alert('Both date ranges must be filled.');
+            window.location = '../../src/elasticsearch/results.php'; </script>";
+        }
     }
 
     return $all_empty;
 }
 
-function query_builder($query_array, $field, $input)
+function query_builder($query_array, $field, $input, $input_2)
 {
+    if ($field == 'date_issued') {
+        $date_query =                      [
+            'range' => [
+                $field => [
+                    'gte' => $input,
+                    'lte' => $input_2
+                ]
+            ]
+        ];
 
-    array_push($query_array['body']['query']['bool']['must'], ['match' => [$field => $input]]);
-
+        array_push($query_array['body']['query']['bool']['must'], $date_query);
+    } else {
+        array_push($query_array['body']['query']['bool']['must'], ['match' => [$field => $input]]);
+    }
     return $query_array;
 }
 
-function advanced_search($patent_id, $text_reference, $figure_id, $description, $aspect, $object, $multiple, $caption)
+function advanced_search($title, $author, $abstract, $publisher, $subject, $department, $degree, $beg_date, $end_date)
 {
-    include '../../constants.php';
-    $client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
+    $client = Elasticsearch\ClientBuilder::create()->build();
 
     // Initialize a string builder for the advanced search query.
     $query_array = [
-        'index' => 'figures',
+        'index' => 'dissertations',
         'size' => 5000,
         'body' => [
             'query' => [
@@ -63,36 +95,55 @@ function advanced_search($patent_id, $text_reference, $figure_id, $description, 
     ];
 
 
-    if (!empty($patent_id)) {
-        $query_array = query_builder($query_array, 'patentID', $patent_id);
+    if (!empty($title)) {
+        $query_array = query_builder($query_array, 'title', $title, 0);
     }
 
-    if (!empty($text_reference)) {
-        $query_array = query_builder($query_array, 'origreftext', $text_reference);
+    if (!empty($author)) {
+        $query_array = query_builder($query_array, 'contributor_author', $author, 0);
     }
 
-    if (!empty($figure_id)) {
-        $query_array = query_builder($query_array, 'figid', $figure_id);
+    if (!empty($abstract)) {
+        $query_array = query_builder($query_array, 'description_abstract', $abstract, 0);
     }
 
-    if (!empty($description)) {
-        $query_array = query_builder($query_array, 'description', $description);
+    if (!empty($publisher)) {
+        $query_array = query_builder($query_array, 'publisher', $publisher, 0);
     }
 
-    if (!empty($aspect)) {
-        $query_array = query_builder($query_array, 'aspect', $aspect);
+    if (!empty($subject)) {
+        $query_array = query_builder($query_array, 'subject', $subject, 0);
     }
 
-    if (!empty($object)) {
-        $query_array = query_builder($query_array, 'object', $object);
+    if (!empty($department)) {
+        $query_array = query_builder($query_array, 'contributor_department', $department, 0);
     }
 
-    if (!empty($multiple)) {
-        $query_array = query_builder($query_array, 'is_multiple', $multiple);
+    if (!empty($degree)) {
+        $query_array = query_builder($query_array, 'description_degree', $degree, 0);
     }
 
-    if (!empty($caption)) {
-        $query_array = query_builder($query_array, 'is_caption', $caption);
+    if (!empty($beg_date) || !empty($end_date)) {
+        // If the beginning date or end date are not empty,
+        // prepare for concatenating the date range search
+        // in the string builder.
+
+        if (!DateTime::createFromFormat('Y-m-d', $beg_date) || !DateTime::createFromFormat('Y-m-d', $end_date)) {
+            echo "<script> alert('One or both of the date ranges were in an incorrect format.');
+            window.location = '../../public/views/results.php'; </script>";
+        }
+
+        if (empty($beg_date)) {
+            // If the beginning date is empty, set it to January 1, 1980.
+            $beg_date = date("1980-01-01");
+        }
+
+        if (empty($end_date)) {
+            // If the ending date is empty, set it to today's date.
+            $end_date = date("Y-m-d");
+        }
+
+        $query_array = query_builder($query_array, 'date_issued', $beg_date, $end_date);
     }
 
     $query = $client->search($query_array);

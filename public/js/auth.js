@@ -71,6 +71,8 @@ function registration() {
                     gRecaptchaResponse: responseKey
                 },
                 success: function (data) {
+
+                    console.log(data);
                     
                     // If the PHP code sends back the code 0, the user did not type the same password in the
                     // confirm password field. Warn the user.
@@ -155,8 +157,6 @@ function logIn() {
                 gRecaptchaResponse: responseKey
             },
             success: function (data) {
-
-                console.log(data);
 
                 // If the code returned is 0, the email entered has not been
                 // registered.

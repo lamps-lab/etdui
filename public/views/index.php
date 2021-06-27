@@ -6,7 +6,7 @@
     <div class="flex-center position-ref full-height">
         <div class="content">
             <div class="title m-b-md">
-                Patent Figure Search
+                ETD Search Engine
             </div>
             <form class="search" autocomplete="off" action="../../src/elasticsearch/results.php" method="get">
                 <input type="text" placeholder="Search..." name="search" id="search" oninput="suggestResults('search')" required>

@@ -7,71 +7,60 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="../../src/elasticsearch/insert_action.php" method="POST" enctype="multipart/form-data">
+            <form action="../../src/elasticsearch/insert_action.php" method="POST">
                 <div class="modal-header">
-                    <slot name="patent-id">
+                    <slot name="title">
                         <!-- Title input. -->
-                        Patent ID: <input type="text" id="patent-id" name="patent-id" required/>
+                        Title: <input type="text" id="title" name="title" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="text-reference">
+                    <slot name="url">
+                        <!-- Title input. -->
+                        Source URL: <input type="text" id="url" name="url" required/>
+                    </slot>
+                </div>
+                <div class="modal-header">
+                    <slot name="author">
                         <!-- Input box for the author. -->
-                        Text Reference: <input type="text" id="text-reference" name="text-reference" />
+                        Author: <input type="text" id="author" name="author" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="figure-id">
+                    <slot name="abstract">
                         <!-- Input box for the abstract. -->
-                        Figure ID: <input type="text" id="figure-id" name="figure-id" required/>
+                        Abstract: <input type="text" id="abstract" name="abstract" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="aspect">
+                    <slot name="publisher">
                         <!-- Input box for the publisher. -->
-                        Aspect: <input type="text" id="aspect" name="aspect"/>
+                        Publisher: <input type="text" id="publisher" name="publisher" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="object">
+                    <slot name="subject">
                         <!-- Input box for the publisher. -->
-                        Object: <input type="text" id="object" name="object" />
+                        Subject: <input type="text" id="subject" name="subject" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="description">
-                        <!-- Input box for the publisher. -->
-                        Description: <input type="text" id="description" name="description" required/>
-                    </slot>
-                </div>
-                <div class="modal-header">
-                    <slot name="pid">
+                    <slot name="department">
                         <!-- Input box for the department. -->
-                        PID: <input type="text" id="pid" name="pid" required/>
+                        Department: <input type="text" id="department" name="department" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="subfig">
-                        <!-- Input box for the department. -->
-                        Subfigure: <input type="text" id="subfig" name="subfig" />
+                    <slot name="degree">
+                        <!-- Input box for the degree name. -->
+                        Degree: <input type="text" id="degree" name="degree" required/>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="multiple">
-                        <!-- Input box for the department. -->
-                        Multiple Figures: <input type="checkbox" id="multiple" name="multiple" />
-                    </slot>
-                </div>
-                <div class="modal-header">
-                    <slot name="caption">
-                        <!-- Input box for the department. -->
-                        Has Caption: <input type="checkbox" id="caption" name="caption" />
-                    </slot>
-                </div>
-                <div class="modal-header">
-                    <slot name="img">
-                        <!-- Input box for the department. -->
-                        Upload Image: <input type="file" id="img" name="img" required/>
+                    <slot name="date">
+                        <!-- Input boxes for publication date range. -->
+                        Date: <input type="text" placeholder="YYYY-MM-DD" id="date" name="date" required/>
+                       
                     </slot>
                 </div>
                 <div class="modal-footer">

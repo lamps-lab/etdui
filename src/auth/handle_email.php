@@ -45,20 +45,20 @@ if (isset($_SESSION['user_id'])) {
                 
                 <head>
                     <meta charset="UTF-8">
-                    <title> Patent Figure Search Verificaton</title>
+                    <title> Shields Search Verificaton</title>
                 </head>
                 
                 <body>
                     <p> Thank you for signing up to Shields Search! Please click on the link
                         to verify your email!
                     </p>
-                    <a href="https://www.cs.odu.edu/~penzias/Figure-Search-Engine/src/auth/verified.php?token=' . $user->get_token() . '">
+                    <a href="http://localhost/Web-Programming/src/auth/verified.php?token=' . $user->get_token() . '">
                     Verify your email. </a>
                 </body>
                 
                 </html>';
 
-        $title = "Patent Figure Search Account Email Verification";
+        $title = "Shields Search Account Email Verification";
         $sender = EMAIL;
         $receiver = $user->get_email();
 
@@ -82,7 +82,7 @@ function send_password_reset($email)
                 
                 <head>
                     <meta charset="UTF-8">
-                    <title> Patent Figure Search Password Reset</title>
+                    <title> Shields Search Password Reset</title>
                 </head>
                 
                 <body>
@@ -92,13 +92,13 @@ function send_password_reset($email)
                         If you did not request a password reset, no further
                         action is required.
                     </p>
-                    <a href="https://www.cs.odu.edu/~penzias/Figure-Search-Engine/src/auth/reset_forgotten_password.php?token=' . $user->get_token() . '">
+                    <a href="http://localhost/Web-Programming/src/auth/reset_forgotten_password.php?token=' . $user->get_token() . '">
                     Reset Password. </a>
                 </body>
                 
                 </html>';
 
-    $title = "Patent Figure Search Reset Password";
+    $title = "Shields Search Reset Password";
     $sender = EMAIL;
     $receiver = $email;
 

@@ -4,23 +4,23 @@ session_start();
 
 require '../../vendor/autoload.php';
 include '../mysql_login.php';
-require_once '../../src/figure.php';
+require_once '../../src/dissertation.php';
 
-if (isset($_POST['figure_id'])) {
+if (isset($_POST['dissertation_id'])) {
 
     $user_id = $_SESSION['user_id'];
 
-    $figure = new Figure();
+    $dissertation = new Dissertation();
 
     // Set the dissertation ID.
-    $figure->set_id($_POST['figure_id']);
+    $dissertation->set_id($_POST['dissertation_id']);
 
-    if ($figure->liked_by_user($user_id)) {
-        $figure->unlike_figure($user_id);
+    if ($dissertation->liked_by_user($user_id)) {
+        $dissertation->unlike_dissertation($user_id);
         // Return 0 for unliking a dissertation.
         echo 0;
     } else {
-        $figure->like_figure($user_id);
+        $dissertation->like_dissertation($user_id);
         // Return 1 for liking a dissertation.
         echo 1;
     }

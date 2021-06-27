@@ -96,7 +96,7 @@ class User
             $this->set_id($row['id']);
             $this->set_email($row['email']);
             $this->set_name($row['username']);
-            $this->set_hashed_password($row['hashed_password']);
+            $this->set_hashed_password($row['hashedpassword']);
             $this->set_verified($row['verified']);
             $this->set_token($row['token']);
         }
@@ -152,7 +152,7 @@ class User
         $token = openssl_random_pseudo_bytes(16);
         $token = bin2hex($token);
 
-        $sql = "INSERT INTO users (email, username, hashed_password, verified, token) VALUES ('" . $entered_email . "', '" .
+        $sql = "INSERT INTO users (email, username, hashedpassword, verified, token) VALUES ('" . $entered_email . "', '" .
             $entered_name . "', '" . $entered_password . "', FALSE, '" . $token . "');";
 
         if ($connection->query($sql) === true) {
@@ -203,7 +203,7 @@ class User
             $this->set_id($row["id"]);
 
             // Set the hashed password.
-            $hashed_password = $row["hashed_password"];
+            $hashed_password = $row["hashedpassword"];
 
             if (password_verify($entered_password, $hashed_password)) {
                 // If the hashed password is verified as the hash of
@@ -247,7 +247,7 @@ class User
 
         // Update the users password with the newly entered password.
 
-        $sql = "UPDATE users SET hashed_password='" . $new_hashed_password . "' WHERE id='" . $this->get_id() . "';";
+        $sql = "UPDATE users SET hashedpassword='" . $new_hashed_password . "' WHERE id='" . $this->get_id() . "';";
         if ($connection->query($sql) === true) {
             return true;
         } else {

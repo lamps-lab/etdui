@@ -1,16 +1,23 @@
 <?php
 
+error_reporting(E_ALL);
+error_reporting(-1);
+ini_set('error_reporting', E_ALL);
+
 require_once '../../src/search_history.php';
 
 $search_history = new SearchHistory();
 
 $search_history->set_user($_SESSION['user_id']);
-$search_history->set_patent_id($patent_id_v);
-$search_history->set_text_reference($text_reference_v);
-$search_history->set_figure_id($figure_id_v);
-$search_history->set_description($description_v);
-$search_history->set_aspect($aspect_v);
-$search_history->set_object($object_v);
+$search_history->set_title($title_v);
+$search_history->set_author($author_v);
+$search_history->set_publisher($publisher_v);
+$search_history->set_abstract($abstract_v);
+$search_history->set_subject($subject_v);
+$search_history->set_department($department_v);
+$search_history->set_degree($degree_v);
+$search_history->set_beg_date($beg_date_v);
+$search_history->set_end_date($end_date_v);
 $search_history->set_normal_search($search);
 $search_history->set_url($search_url);
 

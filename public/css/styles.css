@@ -25,30 +25,10 @@ html, body {
     position: absolute;
     right: 10px;
     top: 18px;
-    position: fixed;
-}
-
-.bottom-panel {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-}
-
-.left-panel {
-    float: left;
-    width: 50%;
-}
-
-.right-panel {
-    float: right;
-    width: 50%;
 }
 
 .content {
     text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
 }
 
 .title {
@@ -159,7 +139,7 @@ button.saved-history:hover::before {
 
 button.save {
     float: left;
-    width: 100px;
+    width: 15%;
     padding: 10px;
     background: #00BFFF;
     font-size: 18px;
@@ -204,7 +184,7 @@ button.saved:hover::before {
 
 button.like {
     float: left;
-    width: 100px;
+    width: 15%;
     padding: 10px;
     background: #00BFFF;
     font-size: 18px;
@@ -224,7 +204,7 @@ button.like:hover {
 
 button.liked {
     float: left;
-    width: 100px;
+    width: 15%;
     padding: 10px;
     background: #73EC21;
     font-size: 18px;
@@ -247,24 +227,10 @@ button.liked:hover::before {
     content: "Unlike";
 }
 
-button.submit {
-    width: 100px;
-    padding: 10px;
-    background: #00BFFF;
-    font-size: 18px;
-    border: 1px solid gray;
-    cursor: pointer;
-    border-radius: 25px;
-}
-
-button.submit:hover {
-    background: #045292;
-}
-
 button.download {
     float: left;
     margin-right: 10px;
-    width: 100px;
+    width: 15%;
     padding: 10px;
     background: #00BFFF;
     font-size: 18px;
@@ -292,52 +258,12 @@ button.download2:hover {
     background: #045292;
 }
 
-button.add-tag {
-    background: #00BFFF;
-    border-radius: 25px;
-    border: 1px solid gray;
-    cursor: pointer;
-}
-
-button.add-tag:hover {
-    background: #045292;
-}
-
-button.add-to-list {
-    float: right;
-    margin-right: 10px;
-    width: 100px;
-    padding: 10px;
-    background: #00BFFF;
-    font-size: 18px;
-    border: 1px solid gray;
-    cursor: pointer;
-    border-radius: 25px;
-}
-
-button.add-to-list::before {
-    content: "\2795";
-}
-
-button.add-to-list:hover {
-    background: #045292;
-}
-
 ul.menu {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
     background-color: gray;
-}
-
-.center {
-    margin: 0;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
 }
 
 li.menu {
@@ -381,53 +307,6 @@ button.login:hover {
     background: #045292;
 }
 
-button.user-tag {
-    background: #00BFFF;
-    border: 1px solid gray;
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
-    border-right-width: 0px;
-    cursor: pointer;
-}
-
-button.user-tag:hover {
-    background: #045292;
-}
-
-button.remove-tag {
-    background: #00BFFF;
-    border: 1px solid gray;
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
-    border-left-width: 0px;
-    cursor: pointer;
-}
-
-button.remove-tag:hover {
-    background: rgb(221, 85, 85);
-}
-
-button.tag {
-    background: #00BFFF;
-    border: 1px solid gray;
-    cursor: pointer;
-    border-radius: 25px;
-}
-
-button.tag:hover {
-    background: #045292;
-}
-
-.tags {
-    align-items: center;
-    display: flex;
-    justify-content: center;
-}
-
-form.tag {
-    float: left;
-}
-
 .container {
     width: 25%;
 }
@@ -443,31 +322,7 @@ p.error {
 .results {
     margin-left: auto;
     margin-right: auto;
-    width: 90%;
-}
-
-.faceted-search-container {
-    width: 20%;
-    float: left;
-    display: block;
-}
-
-.attribute {
-    padding-bottom: 50px;
-}
-
-label.attribute-label {
-    float: left;
-}
-
-input.attribute-input {
-    float: right;
-}
-
-.results-container {
     width: 70%;
-    float: left;
-    margin-left: 5%;
 }
 
 ul.results {
@@ -540,20 +395,80 @@ input.delete {
     float: left;
 }
 
-.figures-container {
-    border: 3px solid #fff;
-    padding: 20px;
+button.add-tag {
+    background: #00BFFF;
+    border-radius: 25px;
+    border: 1px solid gray;
+    cursor: pointer;
 }
 
-.figure-result {
+button.add-tag:hover {
+    background: #045292;
+}
+
+button.user-tag {
+    background: #00BFFF;
+    border: 1px solid gray;
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+    border-right-width: 0px;
+    cursor: pointer;
+}
+
+button.user-tag:hover {
+    background: #045292;
+}
+
+button.remove-tag {
+    background: #00BFFF;
+    border: 1px solid gray;
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+    border-left-width: 0px;
+    cursor: pointer;
+}
+
+button.remove-tag:hover {
+    background: rgb(221, 85, 85);
+}
+
+button.tag {
+    background: #00BFFF;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+button.tag:hover {
+    background: #045292;
+}
+
+.tags {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+form.tag {
     float: left;
-    margin-right: 100px;
-    margin-bottom: 100px;
-    font-size: 10px;
 }
 
-.image-border {
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
+button.add-to-list {
+    float: left;
+    margin-right: 10px;
+    width: 100px;
+    padding: 10px;
+    background: #00BFFF;
+    font-size: 18px;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+button.add-to-list::before {
+    content: "\2795";
+}
+
+button.add-to-list:hover {
+    background: #045292;
 }

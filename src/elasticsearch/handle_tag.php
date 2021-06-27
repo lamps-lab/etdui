@@ -10,7 +10,7 @@ if ($_POST['handle'] == "added") {
 
     $tag->set_name($_POST['tag']);
     $tag->set_user($_SESSION['user_id']);
-    $tag->set_figure_id($_POST['figure_id']);
+    $tag->set_dissertation_id($_POST['figure_id']);
 
     if (!$tag->has_tag()) {
         // If the tag is not already added, add it to the figure.

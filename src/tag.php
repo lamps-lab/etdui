@@ -4,7 +4,7 @@ class Tag
 {
 
     private $id;
-    private $figure_id;
+    private $dissertation_id;
     private $user;
     private $name;
 
@@ -18,14 +18,14 @@ class Tag
         return $this->id;
     }
 
-    function set_figure_id($figure_id)
+    function set_dissertation_id($dissertation_id)
     {
-        $this->figure_id = $figure_id;
+        $this->dissertation_id = $dissertation_id;
     }
 
-    function get_figure_id()
+    function get_dissertation_id()
     {
-        return $this->figure_id;
+        return $this->dissertation_id;
     }
 
     function set_user($user)
@@ -52,8 +52,8 @@ class Tag
     {
         include '../../src/mysql_login.php';
 
-        $query = "SELECT * FROM tags WHERE user='" . $this->get_user() .
-            "' AND figure='" . $this->get_figure_id() . "' AND name='" .
+        $query = "SELECT * FROM dissertation_tags WHERE user='" . $this->get_user() .
+            "' AND dissertation='" . $this->get_dissertation_id() . "' AND name='" .
             $this->get_name() . "';";
 
         return $connection->query($query);
@@ -70,8 +70,8 @@ class Tag
     {
         include '../../src/mysql_login.php';
 
-        $sql = "INSERT INTO tags(user, figure, name) VALUES ('" .
-            $this->get_user() . "', '" . $this->get_figure_id() .
+        $sql = "INSERT INTO dissertation_tags(user, dissertation, name) VALUES ('" .
+            $this->get_user() . "', '" . $this->get_dissertation_id() .
             "', '" . $this->get_name() . "');";
 
         if ($connection->query($sql)) {
@@ -87,7 +87,7 @@ class Tag
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM tags WHERE id='" . $this->get_id() . "';";
+        $sql = "DELETE FROM dissertation_tags WHERE id='" . $this->get_id() . "';";
 
         if ($connection->query($sql)) {
             return true;

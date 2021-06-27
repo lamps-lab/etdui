@@ -12,57 +12,60 @@
             </div>
             <form action="../../src/elasticsearch/results.php" method="GET">
                 <div class="modal-header">
-                    <slot name="patent-id">
+                    <slot name="title">
                         <!-- Title input. -->
-                        Patent ID: <input type="text" id="patent-id" name="patent-id" value="<?php echo $patent_id_v ?>" />
-                        <button type="button" id="mic-patent-id" onclick="speechToText('mic-patent-id', 'patent-id')" class="btn btn-primary">&#127908</button>
+                        Title: <input type="text" id="title" name="title" value="<?php echo $title_v ?>" />
+                        <button type="button" id="mic-title" onclick="speechToText('mic-title', 'title')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="text-reference">
+                    <slot name="author">
                         <!-- Input box for the author. -->
-                        Text Reference: <input type="text" id="text-reference" name="text-reference" value="<?php echo $text_reference_v ?>" />
-                        <button type="button" id="mic-text-reference" onclick="speechToText('mic-text-reference', 'text-reference')" class="btn btn-primary">&#127908</button>
+                        Author: <input type="text" id="author" name="author" value="<?php echo $author_v ?>" />
+                        <button type="button" id="mic-author" onclick="speechToText('mic-author', 'author')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="figure-id">
+                    <slot name="abstract">
                         <!-- Input box for the abstract. -->
-                        Figure ID: <input type="text" id="figure-id" name="figure-id" value="<?php echo $figure_id ?>" />
-                        <button type="button" id="mic-figure-id" onclick="speechToText('mic-figure-id', 'figure-id')" class="btn btn-primary">&#127908</button>
+                        Abstract: <input type="text" id="abstract" name="abstract" value="<?php echo $abstract_v ?>" />
+                        <button type="button" id="mic-abstract" onclick="speechToText('mic-abstract', 'abstract')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="description">
+                    <slot name="publisher">
                         <!-- Input box for the publisher. -->
-                        Description: <input type="text" id="description" name="description" value="<?php echo $description_v ?>" />
-                        <button type="button" id="mic-description" onclick="speechToText('mic-description', 'description')" class="btn btn-primary">&#127908</button>
+                        Publisher: <input type="text" id="publisher" name="publisher" value="<?php echo $publisher_v ?>" />
+                        <button type="button" id="mic-publisher" onclick="speechToText('mic-publisher', 'publisher')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="aspect">
+                    <slot name="subject">
                         <!-- Input box for the publisher. -->
-                        Aspect: <input type="text" id="aspect" name="aspect" value="<?php echo $aspect_v ?>" />
-                        <button type="button" id="mic-aspect" onclick="speechToText('mic-aspect', 'aspect')" class="btn btn-primary">&#127908</button>
+                        Subject: <input type="text" id="subject" name="subject" value="<?php echo $subject_v ?>" />
+                        <button type="button" id="mic-subject" onclick="speechToText('mic-subject', 'subject')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="object">
+                    <slot name="department">
                         <!-- Input box for the department. -->
-                        Object: <input type="text" id="object" name="object" value="<?php echo $object_v ?>" />
-                        <button type="button" id="mic-object" onclick="speechToText('mic-object', 'object')" class="btn btn-primary">&#127908</button>
+                        Department: <input type="text" id="department" name="department" value="<?php echo $department_v ?>" />
+                        <button type="button" id="mic-department" onclick="speechToText('mic-department', 'department')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="multiple">
-                        <!-- Input box for the department. -->
-                        Multiple Figures: <input type="checkbox" id="multiple" name="multiple"/>
+                    <slot name="degree">
+                        <!-- Input box for the degree name. -->
+                        Degree: <input type="text" id="degree" name="dgree" value="<?php echo $degree_v ?>" />
+                        <button type="button" id="mic-degree" onclick="speechToText('mic-degree', 'degree')" class="btn btn-primary">&#127908</button>
                     </slot>
                 </div>
                 <div class="modal-header">
-                    <slot name="caption">
-                        <!-- Input box for the department. -->
-                        Has Caption: <input type="checkbox" id="caption" name="caption"/>
+                    <slot name="date-range">
+                        <!-- Input boxes for publication date range. -->
+                        Issued between: <input type="text" placeholder="YYYY-MM-DD" id="start_date" value="<?php echo $beg_date_v ?>" name="start_date" style="width: 100px" />
+                        —
+                        <input type="text" id="end_date" placeholder="YYYY-MM-DD" name="end_date" value="<?php echo $end_date_v ?>" style="width: 100px" />
                     </slot>
                 </div>
                 <div class="modal-footer">

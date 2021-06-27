@@ -1,95 +1,80 @@
 <?php
 
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
 include '../auth/redirect.php';
 include '../auth/is_verified.php';
 
 require '../../vendor/autoload.php';
 
-include '../../constants.php';
-    
-$client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
+$client = Elasticsearch\ClientBuilder::create()->build();
 
-$patent_id = $text_reference = $figure_id = $description =
-    $aspect = $object = $pid = $subfig = $image_name = 
-    $image_temp = '';
-
-$multiple = 0;
-$caption = 0;
+$title = $url = $author = $abstract = $publisher = $subject
+    = $department = $degree = $date = '';
 
 $results = [];
 
 
 // Set variables.
 
-if (isset($_POST['patent-id'])) {
-    $patent_id = $_POST['patent-id'];
+if (isset($_POST['title'])) {
+    $title = $_POST['title'];
 }
 
-if (isset($_POST['text-reference'])) {
-    $url = $_POST['text-reference'];
+if (isset($_POST['url'])) {
+    $url = $_POST['url'];
 }
 
-if (isset($_POST['figure-id'])) {
-    $figure_id = $_POST['figure-id'];
+if (isset($_POST['author'])) {
+    $author = $_POST['author'];
 }
 
-if (isset($_POST['aspect'])) {
-    $aspect = $_POST['aspect'];
+if (isset($_POST['abstract'])) {
+    $abstract = $_POST['abstract'];
 }
 
-if (isset($_POST['object'])) {
-    $object = $_POST['object'];
+if (isset($_POST['publisher'])) {
+    $publisher = $_POST['publisher'];
 }
 
-if (isset($_POST['description'])) {
-    $description = $_POST['description'];
+if (isset($_POST['subject'])) {
+    $subject = $_POST['subject'];
 }
 
-if (isset($_POST['pid'])) {
-    $pid = $_POST['pid'];
+if (isset($_POST['department'])) {
+    $department = $_POST['department'];
 }
 
-if (isset($_POST['subfig'])) {
-    $subfig = $_POST['subfig'];
+if (isset($_POST['degree'])) {
+    $degree = $_POST['degree'];
 }
 
-if (isset($_POST['multiple'])) {
-    $multiple = 1;
+if (isset($_POST['date'])) {
+    $date = $_POST['date'];
+    if (!DateTime::createFromFormat('Y-m-d', $date)) {
+        echo "<script> alert('Date is not in the correct format.');
+            window.location = '../../public/views/index.php'; </script>";
+    }
 }
 
-if (isset($_POST['caption'])) {
-    $caption = 1;
-}
-
-if (isset($_FILES['img'])) {
-    $image_temp = $_FILES['img']['tmp_name'];
-}
-
-// Create array for indexing figure entry.
+// Create array for indexing dissertation entry.
 $params = [
-    'index' => 'figures',
+    'index' => 'dissertations',
     'body' => [
-        'description' => $description,
-        'figid' => $figure_id,
-        'is_caption' => $caption,
+        'title' => $title,
+        'identifier_sourceurl' => $url,
+        'contributor_author' => $author,
         'description_abstract' => $abstract,
-        'is_multiple' => $multiple,
-        'object' => $object,
-        'origreftext' => $text_reference,
-        'patentID' => $patent_id,
-        'aspect' => $aspect,
-        'pid' => $pid
+        'publisher' => $publisher,
+        'subject' => $subject,
+        'contributor_department' => $department,
+        'degree_name' => $degree,
+        'date_issued' => $date
     ]
 ];
 
 $response = $client->index($params);
 
 $params_2 = [
-    'index' => 'figures',
+    'index' => 'dissertations',
     'id' => $response['_id']
 ];
 
@@ -102,26 +87,34 @@ include '../../public/views/header.php';
     <?php
     include '../../public/views/menu.php';
     include '../../public/views/search_bar.php';
-    include '../../src/figure.php';
-
-    $figure = new Figure();
-
-    $figure->set_patent_id($result['_source']['patentID']);
-    $figure->set_text_reference($result['_source']['origreftext']);
-    $figure->set_figure_id($result['_source']['figid']);
-    $figure->set_description($result['_source']['description']);
-    $figure->set_aspect($result['_source']['aspect']);
-    $figure->set_object($result['_source']['object']);
+    include '../../public/views/advanced_search.php';
 
 
-    $image_name = FIGURES_PATH . $figure->get_patent_id() . "-D0000" . $figure->get_figure_id() . ".png";
-    move_uploaded_file($image_temp, $image_name);
+    // Set the abstract.
+    $abstract = $result['_source']['description_abstract'];
 
-    echo "<body>";
-    echo "<br><br><br>";
-    $figure->summary();
-    echo "</body>
-    </html>";
+    $preview = "";
+
+    for ($i = 0; $i < 300; $i++) {
+        // Create an abstract preview, which is the first
+        // 300 characters of the abstract.
+        $preview = $preview . $abstract[$i];
+    }
+
+    $preview = $preview . '...';
+
+    // Set the dissertation data variables.
+    $url = $result['_source']['identifier_sourceurl'];
+    $title = $result['_source']['title'];
+    $author = $result['_source']['contributor_author'];
+    $publisher = $result['_source']['publisher'];
+    $date_issued = $result['_source']['date_issued'];
+
+    echo '<a class="results" href="' . $url . '">' . $title . '</a><br>';
+    echo '<b><u>Author(s):</u></b> ' . $author . '<br>';
+    echo '<b><u>Publisher:</u></b> ' . $publisher . '<br>';
+    echo '<b><u>Date:</u></b> ' . $date_issued . '<br><br>';
+    echo '<p>' . $preview . '</p>';
 
     ?>
 

@@ -9,7 +9,7 @@ require_once '../../src/search_history.php';
 
 session_start();
 
-$sql = "SELECT * FROM figure_search_history WHERE user='" . $_SESSION['user_id'] . "';";
+$sql = "SELECT * FROM search_history WHERE user='" . $_SESSION['user_id'] . "';";
 
 $results = $connection->query($sql);
 ?>
@@ -31,12 +31,15 @@ $results = $connection->query($sql);
             $search_history = new SearchHistory();
             $search_history->set_id($row['id']);
             $search_history->set_user($_SESSION['user_id']);
-            $search_history->set_patent_id($row['patent_id']);
-            $search_history->set_text_reference($row['text_reference']);
-            $search_history->set_figure_id($row['figure_id']);
-            $search_history->set_description($row['description']);
-            $search_history->set_aspect($row['aspect']);
-            $search_history->set_object($row['object']);
+            $search_history->set_title($row['title']);
+            $search_history->set_author($row['author']);
+            $search_history->set_abstract($row['abstract']);
+            $search_history->set_publisher($row['publisher']);
+            $search_history->set_subject($row['subject']);
+            $search_history->set_department($row['department']);
+            $search_history->set_degree($row['degree']);
+            $search_history->set_beg_date($row['beg_date']);
+            $search_history->set_end_date($row['end_date']);
             $search_history->set_date_searched($row['date_searched']);
             $search_history->set_normal_search($row['normal_search']);
             $search_history->set_url($row['url']);

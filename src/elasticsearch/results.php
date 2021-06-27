@@ -1,9 +1,4 @@
 <?php
-
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
-
 include 'normal_search.php';
 include 'advanced_search_action.php';
 
@@ -12,11 +7,12 @@ $search_v = '';
 
 $search = "";
 
-$multiple = $patent_id = $text_reference = $figure_id = $description =
-    $aspect = $object = $caption = '';
+$title = $author = $abstract = $publisher = $subject
+    = $department = $degree = $beg_date = $end_date = '';
 
-$multiple = $patent_id_v = $text_reference_v = $figure_id_v = $description_v =
-    $aspect_v = $object_v = '';
+$title_v = $author_v = $abstract_v = $publisher_v =
+    $subject_v = $department_v = $degree_v = $beg_date_v
+    = $end_date_v = '';
 
 // If the normal search button was clicked, perform the 
 // normal search.
@@ -47,93 +43,116 @@ if (isset($_GET['advanced_search'])) {
     $replace = [];
 
     // Set all of the variables and sanitize the strings.
-    if (isset($_GET['patent-id'])) {
+    if (isset($_GET['title'])) {
+        $title = $_GET['title'];
+        $title = filter_var($title, FILTER_SANITIZE_STRING);
+        $title_v = $title;
 
-        $patent_id = $_GET['patent-id'];
-        $patent_id = filter_var($patent_id, FILTER_SANITIZE_STRING);
-        $patent_id_v = $patent_id;
-
-        if (!empty($patent_id)) {
-            array_push($temp_array, $patent_id);
-            array_push($replace, '<mark class="highlight"> ' . $patent_id . ' </mark>');
+        if (!empty($title)) {
+            array_push($temp_array, $title);
+            array_push($replace, '<mark class="highlight"> ' . $title . ' </mark>');
         }
     }
 
-    if (isset($_GET['text-reference'])) {
-        $text_reference = $_GET['text-reference'];
-        $text_reference = filter_var($text_reference, FILTER_SANITIZE_STRING);
-        $text_reference_v = $text_reference;
+    if (isset($_GET['author'])) {
+        $author = $_GET['author'];
+        $author = filter_var($author, FILTER_SANITIZE_STRING);
+        $author_v = $author;
 
-        if (!empty($text_reference)) {
-            array_push($temp_array, $text_reference);
-            array_push($replace, '<mark class="highlight">' . $text_reference . '</mark>');
+        if (!empty($author)) {
+            array_push($temp_array, $author);
+            array_push($replace, '<mark class="highlight">' . $author . '</mark>');
         }
     }
 
-    if (isset($_GET['figure-id'])) {
-        $figure_id = $_GET['figure-id'];
-        $figure_id = filter_var($figure_id, FILTER_SANITIZE_STRING);
-        $figure_id_v =  $figure_id;
+    if (isset($_GET['abstract'])) {
+        $abstract = $_GET['abstract'];
+        $abstract = filter_var($abstract, FILTER_SANITIZE_STRING);
+        $abstract_v =  $abstract;
 
-        if (!empty($figure_id)) {
-            array_push($temp_array, $figure_id);
-            array_push($replace, '<mark class="highlight">' . $figure_id . '</mark>');
+        if (!empty($abstract)) {
+            array_push($temp_array, $abstract);
+            array_push($replace, '<mark class="highlight">' . $abstract . '</mark>');
         }
     }
 
-    if (isset($_GET['description'])) {
-        $description = $_GET['description'];
-        $description = filter_var($description, FILTER_SANITIZE_STRING);
-        $description_v =  $description;
+    if (isset($_GET['publisher'])) {
+        $publisher = $_GET['publisher'];
+        $publisher = filter_var($publisher, FILTER_SANITIZE_STRING);
+        $publisher_v =  $publisher;
 
-        if (!empty($description)) {
-            array_push($temp_array, $description);
-            array_push($replace, '<mark class="highlight">' . $description . '</mark>');
+        if (!empty($publisher)) {
+            array_push($temp_array, $publisher);
+            array_push($replace, '<mark class="highlight">' . $publisher . '</mark>');
         }
     }
 
-    if (isset($_GET['aspect'])) {
-        $aspect = $_GET['aspect'];
-        $aspect = filter_var($aspect, FILTER_SANITIZE_STRING);
-        $aspect_v = $aspect;
+    if (isset($_GET['subject'])) {
+        $subject = $_GET['subject'];
+        $subject = filter_var($subject, FILTER_SANITIZE_STRING);
+        $subject_v = $subject;
 
-        if (!empty($aspect)) {
-            array_push($temp_array, $aspect);
-            array_push($replace, '<mark class="highlight">' . $aspect . '</mark>');
+        if (!empty($subject)) {
+            array_push($temp_array, $subject);
+            array_push($replace, '<mark class="highlight">' . $subject . '</mark>');
         }
     }
 
-    if (isset($_GET['object'])) {
-        $object = $_GET['object'];
-        $object = filter_var($object, FILTER_SANITIZE_STRING);
-        $object_v = $object;
+    if (isset($_GET['department'])) {
+        $department = $_GET['department'];
+        $department = filter_var($department, FILTER_SANITIZE_STRING);
+        $department_v = $department;
 
-        if (!empty($object)) {
-            array_push($temp_array, $object);
-            array_push($replace, '<mark class="highlight">' . $object . '</mark>');
+        if (!empty($department)) {
+            array_push($temp_array, $department);
+            array_push($replace, '<mark class="highlight">' . $department . '</mark>');
         }
     }
 
-    if (isset($_GET['multiple'])) {
-        $multiple = 1;
-    } else {
-        $multiple = 0;
+    if (isset($_GET['dgree'])) {
+        $degree = $_GET['dgree'];
+        $degree = filter_var($degree, FILTER_SANITIZE_STRING);
+        $degree_v = $degree;
+
+        if (!empty($degree)) {
+            array_push($temp_array, $degree);
+            array_push($replace, '<mark class="highlight">' . $degree . '</mark>');
+        }
     }
 
-    if (isset($_GET['caption'])) {
-        $caption = 1;
-    } else {
-        $caption = 0;
+    if (isset($_GET['start_date'])) {
+        $beg_date = $_GET['start_date'];
+        $beg_date = filter_var($beg_date, FILTER_SANITIZE_STRING);
+        $beg_date_v = $beg_date;
+
+        if (!empty($beg_date)) {
+            array_push($temp_array, $beg_date);
+            array_push($replace, '<mark class="highlight">' . $beg_date . '</mark>');
+        }
+    }
+
+    if (isset($_GET['end_date'])) {
+        $end_date = $_GET['end_date'];
+        $end_date = filter_var($end_date, FILTER_SANITIZE_STRING);
+        $end_date_v = $end_date;
+
+        if (!empty($end_date)) {
+            array_push($temp_array, $end_date);
+            array_push($replace, '<mark class="highlight">' . $end_date . '</mark>');
+        }
     }
 
     // Retrieve the boolean for if all the inputs are empty.
     $all_empty = no_inputs(
-        $patent_id,
-        $text_reference,
-        $figure_id,
-        $description,
-        $aspect,
-        $object
+        $title,
+        $author,
+        $abstract,
+        $publisher,
+        $subject,
+        $department,
+        $degree,
+        $beg_date,
+        $end_date
     );
 
     if ($all_empty) {
@@ -144,15 +163,17 @@ if (isset($_GET['advanced_search'])) {
 
 
     $results = advanced_search(
-        $patent_id,
-        $text_reference,
-        $figure_id,
-        $description,
-        $aspect,
-        $object,
-        $multiple,
-        $caption
+        $title,
+        $author,
+        $abstract,
+        $publisher,
+        $subject,
+        $department,
+        $degree,
+        $beg_date,
+        $end_date
     );
+
 }
 
 include '../../public/views/header.php';
@@ -163,10 +184,11 @@ include '../../public/views/header.php';
     session_start();
     include '../../public/views/menu.php';
     include '../../public/views/search_bar.php';
-    require_once '../figure.php';
+    include '../../public/views/advanced_search.php';
+    require_once '../dissertation.php';
 
     $total_results = count($results);
-    $results_per_page = 9;
+    $results_per_page = 10;
     $total_pages = ceil($total_results / $results_per_page);
 
     if (!isset($_GET['page'])) {
@@ -180,8 +202,8 @@ include '../../public/views/header.php';
     $results = array_slice($results, $offset, $results_per_page);
     // Print out the number of returned search results.
     echo '<p class="num-results"> ' . $total_results . ' search results for ' . $search .
-        $patent_id_v . ' ' . $text_reference_v . ' ' . $description_v . ' ' . $figure_id_v .
-        $aspect_v . ' ' . $object_v . ' ' . $degree_v . ' ' .
+        $title_v . ' ' . $author_v . ' ' . $publisher_v . ' ' . $abstract_v .
+        $subject_v . ' ' . $department_v . ' ' . $degree_v . ' ' .
         $beg_date_v . ' ' . $end_date_v . '</p>';
 
     $search_url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -190,40 +212,50 @@ include '../../public/views/header.php';
 
     include 'search_saved.php';
 
-    $entry = 1;
+    $entry = 0;
 
-    include '../../public/views/faceted_search.php';
-    echo '<div class="results-container">';
+    function shorten_abstract($entered_abstract)
+    {
+        $preview = "";
+
+        for ($i = 0; $i < 300; $i++) {
+
+            // Create an abstract preview, which is the first
+            // 300 characters of the abstract.
+            $preview = $preview . $entered_abstract[$i];
+        }
+
+        return $preview;
+    }
+
     foreach ($results as $r) {
 
-        // Set the figure data variables.
-        $patent_id = $r['_source']['patentID'];
-        $text_reference = $r['_source']['origreftext'];
-        $figure_id = $r['_source']['figid'];
-        $description = $r['_source']['description'];
-        $aspect = $r['_source']['aspect'];
-        $object = $r['_source']['object'];
-        $subfig = $r['_source']['subfig'];
+        // Set the dissertation data variables.
+        $abstract = strip_tags($r['_source']['description_abstract']);
+        $title = $r['_source']['title'];
+        $author = $r['_source']['contributor_author'];
+        $publisher = $r['_source']['publisher'];
+        $date_issued = $r['_source']['date_issued'];
 
-        $figure = new Figure();
+        $preview = shorten_abstract($abstract);
 
-        $figure->set_id($r['_id']);
-        
+        $dissertation = new Dissertation();
+
+        $dissertation->set_id($r['_id']);
+        $dissertation->set_url($r['_source']['identifier_sourceurl']);
+
         // Replace strings with highlighted text.
-        $figure->set_patent_id($patent_id);
-        $figure->set_text_reference(str_ireplace($temp_array, $replace, $text_reference));
-        $figure->set_figure_id($figure_id);
-        $figure->set_subfig($subfig);
-        $figure->set_description(str_ireplace($temp_array, $replace, $description));
-        $figure->set_aspect(str_ireplace($temp_array, $replace, $aspect));
-        $figure->set_object(str_ireplace($temp_array, $replace, $object));
+        $dissertation->set_title(str_ireplace($temp_array, $replace, $title));
+        $dissertation->set_author(str_ireplace($temp_array, $replace, $author));
+        $dissertation->set_publisher(str_ireplace($temp_array, $replace, $publisher));
+        $dissertation->set_abstract(str_ireplace($temp_array, $replace, $abstract));
+        $dissertation->set_preview(str_ireplace($temp_array, $replace, $preview));
+        $dissertation->set_date(str_ireplace($temp_array, $replace, $date_issued));
 
-        echo $figure->display_result($entry) . '&nbsp;';
+        $dissertation->result($entry);
 
         $entry += 1;
     }
-
-    echo '</div>';
 
     $current_url = $_SERVER["REQUEST_URI"];
 

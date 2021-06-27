@@ -36,12 +36,12 @@ class UserList
         return $this->name;
     }
 
-    function in_list($figure_id)
+    function in_list($dissertation_id)
     {
         include '../../src/mysql_login.php';
 
-        $query = "SELECT * FROM user_list_items WHERE list='" . $this->get_id() .
-            "' AND figure_id='" . $figure_id . "';";
+        $query = "SELECT * FROM user_dissertation_list_items WHERE list='" . $this->get_id() .
+            "' AND dissertation_id='" . $dissertation_id . "';";
 
         $result = $connection->query($query);
 
@@ -54,17 +54,24 @@ class UserList
 
         session_start();
 
-        $sql = "INSERT INTO user_lists (user, name) VALUES ('" .
+        $sql = "INSERT INTO user_dissertation_lists (user, name) VALUES ('" .
             $_SESSION['user_id'] . "', '" . $this->get_name() . "');";
 
         if ($connection->query($sql)) {
-            $query = "SELECT * FROM user_lists WHERE user='" . $this->get_user() . "' AND name='" .
-                $this->get_name() . "';";
-
-            return $connection->query($query);
+            return true;
         } else {
             echo $connection->error;
         }
+    }
+
+    function items()
+    {
+        include '../../src/mysql_login.php';
+
+        $query = "SELECT * FROM user_dissertation_list_items WHERE user='" . $this->get_user() .
+            "' AND list='" . $this->get_id() . "';";
+
+        return $connection->query($query);
     }
 
 
@@ -72,11 +79,11 @@ class UserList
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM user_lists WHERE id='" . $this->get_id() . "';";
+        $sql = "DELETE FROM user_dissertation_lists WHERE id='" . $this->get_id() . "';";
 
         if ($connection->query($sql)) {
 
-            $sql = "DELETE FROM user_list_items WHERE list='" . $this->get_id() . "';";
+            $sql = "DELETE FROM user_dissertation_list_items WHERE list='" . $this->get_id() . "';";
 
             if ($connection->query($sql)) {
                 return true;
@@ -92,11 +99,11 @@ class UserList
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM user_lists;";
+        $sql = "DELETE FROM user_dissertation_lists;";
 
         if ($connection->query($sql)) {
 
-            $sql = "DELETE FROM user_list_items WHERE user='" . $this->get_user() . "';";
+            $sql = "DELETE FROM user_dissertation_list_items WHERE user='" . $this->get_user() . "';";
 
             if ($connection->query($sql)) {
                 header('Location: ../../public/views/lists.php');
@@ -106,13 +113,13 @@ class UserList
         }
     }
 
-    function add($figure_id)
+    function add($dissertation_id)
     {
         include '../../src/mysql_login.php';
 
-        $sql = "INSERT INTO user_list_items (list, user, figure_id)" .
+        $sql = "INSERT INTO user_dissertation_list_items (list, user, dissertation_id)" .
             " VALUES ('" . $this->get_id() . "', '" . $this->get_user() .
-            "', '" . $figure_id . "');";
+            "', '" . $dissertation_id . "');";
 
         if ($connection->query($sql)) {
             return true;
@@ -121,12 +128,12 @@ class UserList
         }
     }
 
-    function remove($figure_id)
+    function remove($dissertation_id)
     {
         include '../../src/mysql_login.php';
         session_start();
 
-        $sql = "DELETE FROM user_list_items WHERE figure_id='" . $figure_id .
+        $sql = "DELETE FROM user_dissertation_list_items WHERE dissertation_id='" . $dissertation_id .
             "' AND user='" . $_SESSION['user_id'] . "';";
 
         if ($connection->query($sql)) {
@@ -138,15 +145,6 @@ class UserList
 
     function count_items()
     {
-        include '../../src/mysql_login.php';
-
-        $sql = "SELECT COUNT(*) as total FROM user_list_items WHERE list='" . $this->get_id() . "';";
-        
-        $results = $connection->query($sql);
-
-        while ($row = $results->fetch_assoc()) {
-            return $row['total'];
-        }
-
+        return sizeof($this->items());
     }
 }

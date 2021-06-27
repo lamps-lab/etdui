@@ -4,12 +4,15 @@ class SearchHistory
 {
     private $id;
     private $user;
-    private $patent_id;
-    private $text_reference;
-    private $figure_id;
-    private $description;
-    private $aspect;
-    private $object;
+    private $title;
+    private $author;
+    private $abstract;
+    private $publisher;
+    private $subject;
+    private $department;
+    private $degree;
+    private $beg_date;
+    private $end_date;
     private $date_searched;
     private $normal_search;
     private $url;
@@ -24,6 +27,7 @@ class SearchHistory
         return $this->id;
     }
 
+
     function set_user($user)
     {
         $this->user = $user;
@@ -34,64 +38,94 @@ class SearchHistory
         return $this->user;
     }
 
-    function set_patent_id($patent_id)
+    function set_title($title)
     {
-        $this->patent_id = $patent_id;
+        $this->title = $title;
     }
 
-    function get_patent_id()
+    function get_title()
     {
-        return $this->patent_id;
+        return $this->title;
     }
 
-    function set_text_reference($text_reference)
+    function set_author($author)
     {
-        $this->text_reference = $text_reference;
+        $this->author = $author;
     }
 
-    function get_text_reference()
+    function get_author()
     {
-        return $this->text_reference;
+        return $this->author;
     }
 
-    function set_figure_id($figure_id)
+    function set_abstract($abstract)
     {
-        $this->figure_id = $figure_id;
+        $this->abstract = $abstract;
     }
 
-    function get_figure_id()
+    function get_abstract()
     {
-        return $this->figure_id;
+        return $this->abstract;
     }
 
-    function set_description($description)
+    function set_publisher($publisher)
     {
-        $this->description = $description;
+        $this->publisher = $publisher;
     }
 
-    function get_description()
+    function get_publisher()
     {
-        return $this->description;
+        return $this->publisher;
     }
 
-    function set_aspect($aspect)
+    function set_subject($subject)
     {
-        $this->aspect = $aspect;
+        $this->subject = $subject;
     }
 
-    function get_aspect()
+    function get_subject()
     {
-        return $this->aspect;
+        return $this->subject;
     }
 
-    function set_object($object)
+    function set_department($department)
     {
-        $this->object = $object;
+        $this->department = $department;
     }
 
-    function get_object()
+    function get_department()
     {
-        return $this->object;
+        return $this->department;
+    }
+
+    function set_degree($degree)
+    {
+        $this->degree = $degree;
+    }
+
+    function get_degree()
+    {
+        return $this->degree;
+    }
+
+    function set_beg_date($beg_date)
+    {
+        $this->beg_date = $beg_date;
+    }
+
+    function get_beg_date()
+    {
+        return $this->beg_date;
+    }
+
+    function set_end_date($end_date)
+    {
+        $this->end_date = $end_date;
+    }
+
+    function get_end_date()
+    {
+        return $this->end_date;
     }
 
     function set_date_searched($date_searched)
@@ -129,12 +163,29 @@ class SearchHistory
 
         include '../../src/mysql_login.php';
 
-        $sql = "INSERT INTO figure_search_history(user, patent_id, text_reference, figure_id, "
-        . "description, aspect, object, date_searched, normal_search, url) VALUES ('" .
-        $this->get_user() . "', '" . $this->get_patent_id() . "', '" . $this->get_text_reference()
-        . "', '" . $this->get_figure_id() . "', '" . $this->get_description() . "', '" . $this->get_aspect()
-        . "', '" . $this->get_object() . "', '" . $this->get_date_searched() . "', '" . 
-        $this->get_normal_search() . "', '" . $this->get_url() . "');";
+        $div1 = "','";
+        $div2 = "','";
+        $div3 = "','";
+
+        if (empty($this->get_beg_date())) {
+            $this->set_beg_date('NULL');
+            $div1 = "',";
+        }
+
+        if (empty($this->get_end_date())) {
+            $this->set_end_date('NULL');
+            $div2 = ",";
+            $div3 = ",'";
+        }
+
+        $sql = "INSERT INTO search_history(user, title, author, abstract, " .
+            "publisher, subject, department, degree, beg_date, end_date, date_searched, normal_search, url)" .
+            " VALUES ('" . $this->get_user() . "','" . $this->get_title() . "','" .
+            $this->get_author() . "','" . $this->get_abstract() . "','" . $this->get_publisher()
+            . "','" . $this->get_subject() . "','" . $this->get_department() . "','" .
+            $this->get_degree() . $div1 . $this->get_beg_date() . $div2 . $this->get_end_date() .
+            $div3 . $this->get_date_searched() . "','" . $this->get_normal_search() .
+            "','" . $this->get_url() .  "');";
 
         if ($connection->query($sql)) {
             return true;
@@ -148,7 +199,7 @@ class SearchHistory
     {
         include '../../src/mysql_login.php';
 
-        $sql = "SELECT * FROM figure_search_history WHERE url='" . $this->get_url() . "';";
+        $sql = "SELECT * FROM search_history WHERE url='" . $this->get_url() . "';";
         $result = $connection->query($sql);
 
         return ($result->num_rows > 0);
@@ -158,7 +209,7 @@ class SearchHistory
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM figure_search_history WHERE url='" . $this->get_url() . "';";
+        $sql = "DELETE FROM search_history WHERE url='" . $this->get_url() . "';";
 
         if ($connection->query($sql)) {
             header('Location: ../../public/views/search_history_page.php');
@@ -171,7 +222,7 @@ class SearchHistory
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM figure_search_history";
+        $sql = "DELETE FROM search_history";
 
         if ($connection->query($sql)) {
             header('Location: ../../public/views/search_history_page.php');
@@ -184,28 +235,36 @@ class SearchHistory
     {
         echo '<input type="checkbox" class="delete" style="float:left" id="' . $this->get_id() . '" value="' . $this->get_url() . '">';
         echo '<div class="history" data-value="' . $this->get_id() . '-history"  onclick="window.location=\'http://' . $this->get_url() . '\'">';
-        if (!empty($this->get_patent_id())) {
-            echo '<b> Patent ID:</b> ' . $this->get_patent_id() . '<br>';
+        if (!empty($this->get_title())) {
+            echo '<b> Title:</b> ' . $this->get_title() . '<br>';
         }
 
-        if (!empty($this->get_text_reference())) {
-            echo '<b> Text Reference:</b> ' . $this->get_text_reference() . '<br>';
+        if (!empty($this->get_author())) {
+            echo '<b> Author(s):</b> ' . $this->get_author() . '<br>';
         }
 
-        if (!empty($this->get_figure_id())) {
-            echo '<b> Figure ID:</b> ' . $this->get_figure_id() . '<br>';
+        if (!empty($this->get_abstract())) {
+            echo '<b> Abstract:</b> ' . $this->get_abstract() . '<br>';
         }
 
-        if (!empty($this->get_description())) {
-            echo '<b> Description:</b> ' . $this->get_description() . '<br>';
+        if (!empty($this->get_publisher())) {
+            echo '<b> Publisher:</b> ' . $this->get_publisher() . '<br>';
         }
 
-        if (!empty($this->get_aspect())) {
-            echo '<b> Aspect:</b> ' . $this->get_aspect() . '<br>';
+        if (!empty($this->get_subject())) {
+            echo '<b> Subject:</b> ' . $this->get_subject() . '<br>';
         }
 
-        if (!empty($this->get_object())) {
-            echo '<b> Object:</b> ' . $this->get_object() . '<br>';
+        if (!empty($this->get_department())) {
+            echo '<b> Department:</b> ' . $this->get_department() . '<br>';
+        }
+
+        if (!empty($this->get_publisher())) {
+            echo '<b> Degree:</b> ' . $this->get_degree() . '<br>';
+        }
+
+        if (!empty($this->get_beg_date())) {
+            echo '<b> Issued Between:</b> ' . $this->get_beg_date() . ' — ' . $this->get_end_date() . '<br>';
         }
 
         if (!empty($this->get_normal_search())) {
