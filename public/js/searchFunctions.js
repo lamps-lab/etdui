@@ -4,7 +4,7 @@
  * 
  * @param {int} entry Result number on SERP.
  */
- function handleDissertation(entry) {
+function handleDissertation(entry) {
 
     // Bind # with the element ID.
     var elementId = '#' + entry;
@@ -18,7 +18,7 @@
         data: {
             dissertation_id: id
         },
-        success: function (data) {
+        success: function(data) {
             // If save is successful, change button to green and the text to
             // saved.
             $(elementId).toggleClass('saved');
@@ -45,7 +45,7 @@ function handleLike(entry) {
         data: {
             figure_id: id
         },
-        success: function (data) {
+        success: function(data) {
 
             console.log(data);
 
@@ -69,6 +69,10 @@ function handleLike(entry) {
     });
 }
 
+/**
+ * Gets search history values from the frontend (HTML) and sends it to the 
+ * backend PHP handle search script.
+ */
 function handleSearchHistory() {
     var normalSearch = $('#search').val();
     var patentId = $('#patent-id').val();
@@ -93,7 +97,7 @@ function handleSearchHistory() {
             object: object,
             url: searchURL
         },
-        success: function (data) {
+        success: function(data) {
             console.log(data);
             $('#save_history').toggleClass('saved-history');
             $('#save_history').toggleClass('save-history');
@@ -101,9 +105,12 @@ function handleSearchHistory() {
     });
 }
 
+/**
+ * Call delete checked search history.
+ */
 function deleteCheckedHistory() {
 
-    $('.delete:checkbox:checked').each(function () {
+    $('.delete:checkbox:checked').each(function() {
         var checkboxId = '#' + $(this).attr('id');
         var divId = $(this).attr('id') + '-history';
 
@@ -114,7 +121,7 @@ function deleteCheckedHistory() {
                 handled: "handled",
                 url: $(this).val()
             },
-            success: function (data) {
+            success: function(data) {
                 $(checkboxId).hide();
                 $('div').find(`[data-value='${divId}']`).hide();
             }
@@ -122,8 +129,11 @@ function deleteCheckedHistory() {
     });
 }
 
+/**
+ * Call delete list PHP script.
+ */
 function deleteList() {
-    $('.delete:checkbox:checked').each(function () {
+    $('.delete:checkbox:checked').each(function() {
         var checkboxId = '#' + $(this).attr('id');
         var formId = '#' + $(this).attr('id') + '-list';
 
@@ -134,7 +144,7 @@ function deleteList() {
                 delete: "delete",
                 id: $(this).val()
             },
-            success: function (data) {
+            success: function(data) {
                 $(checkboxId).hide();
                 $(formId).hide();
             }
@@ -159,19 +169,19 @@ function speechToText(micId, inputId) {
     var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
     var speechRecognition = new SpeechRecognition();
 
-    speechRecognition.onstart = function () {
+    speechRecognition.onstart = function() {
         // When microphone is on, change the background to green.
         $(microphoneId).css('background', '#73EC21');
     }
 
-    speechRecognition.onspeechend = function () {
+    speechRecognition.onspeechend = function() {
         // If speech stops, stop the speech recognition and return
         // the button to its original color.
         speechRecognition.stop();
         $(microphoneId).css('background', '#00BFFF');
     }
 
-    speechRecognition.onresult = function (event) {
+    speechRecognition.onresult = function(event) {
         // Set the value in the search box.
         var transcript = event.results[0][0].transcript;
         searchBar.value = transcript;
@@ -181,6 +191,10 @@ function speechToText(micId, inputId) {
     speechRecognition.start();
 }
 
+/**
+ * Call suggest search results script.
+ * @param {*} elementId 
+ */
 function suggestResults(elementId) {
 
     var input = document.getElementById(elementId).value;
@@ -191,7 +205,7 @@ function suggestResults(elementId) {
         data: {
             text: input
         },
-        success: function (data) {
+        success: function(data) {
 
             $('#' + elementId).autocomplete({
                 source: JSON.parse(data)
@@ -200,6 +214,10 @@ function suggestResults(elementId) {
     });
 }
 
+/**
+ * Call add tag PHP script.
+ * @param {*} figureId 
+ */
 function addTag(figureId) {
 
     var tag = "";
@@ -219,7 +237,7 @@ function addTag(figureId) {
                 tag: tag,
                 figure_id: figureId
             },
-            success: function (data) {
+            success: function(data) {
 
                 if (data == 1) {
                     $('#tag-error').text("The tag is already used.");
@@ -235,6 +253,10 @@ function addTag(figureId) {
     }
 }
 
+/**
+ * Script that calls remove tag function in PHP script.
+ * @param {*} tagId 
+ */
 function removeTag(tagId) {
     $.ajax({
         type: "POST",
@@ -243,13 +265,19 @@ function removeTag(tagId) {
             handle: "removed",
             tag_id: tagId
         },
-        success: function (data) {
+        success: function(data) {
             $('#' + tagId).remove();
             $('#remove-' + tagId).remove();
         }
     });
 }
 
+/**
+ * Calls the handle list item PHP script.
+ * @param {*} listId 
+ * @param {*} userId 
+ * @param {*} figureId 
+ */
 function handleListItem(listId, userId, figureId) {
     $.ajax({
         type: "POST",
@@ -260,7 +288,7 @@ function handleListItem(listId, userId, figureId) {
             user_id: userId,
             figure_id: figureId
         },
-        success: function (data) {
+        success: function(data) {
 
         }
     });
@@ -268,6 +296,10 @@ function handleListItem(listId, userId, figureId) {
 
 var counter = 0;
 
+/**
+ * Appends the element to the list.
+ * @param {*} figureId 
+ */
 function appendAddListElement(figureId) {
     $('#add-to-list-modal-' + figureId).append("<div class='modal-header' id='add-list-" + counter + "'><slot>" +
         "List Name: <input type='text' id='name-" + counter + "' />" +
@@ -277,6 +309,11 @@ function appendAddListElement(figureId) {
     counter++;
 }
 
+/**
+ * Calls PHP handle list script to add a list entry.
+ * @param {*} listEntryNum 
+ * @param {*} figureId 
+ */
 function addList(listEntryNum, figureId) {
     listName = $('#name-' + listEntryNum).val();
 
@@ -286,7 +323,7 @@ function addList(listEntryNum, figureId) {
         data: {
             name2: listName,
         },
-        success: function (data) {
+        success: function(data) {
             listObject = JSON.parse(data);
 
             var newListElement = "<div class='modal-header'><slot>" + listName +
@@ -299,6 +336,10 @@ function addList(listEntryNum, figureId) {
     });
 }
 
+/**
+ * If the checkbox for segmented correctly is checked. If it is not, append an
+ * input element that prompts the user to enter the correct number of subfigures.
+ */
 function checkSegmentedCorrectly() {
     if ($("#yes-segmented-correctly").is(":checked")) {
         // If "yes" radio button is selected, empty the div for entering
@@ -314,6 +355,10 @@ function checkSegmentedCorrectly() {
     }
 }
 
+/**
+ * If the checkbox for labeled correctly is check, prompt user to enter correct labels.
+ * @param {*} id 
+ */
 function checkLabeledCorrectly(id) {
 
     var enterLabels = "";
@@ -323,9 +368,7 @@ function checkLabeledCorrectly(id) {
         // If "yes" radio button is selected, empty the div for entering
         // correct labels.
         $(".enter-correct-labels-" + id).empty();
-    }
-    
-    else {
+    } else {
         if (!$("#" + id).length) {
             size = $('#num-segmented').val();
 
