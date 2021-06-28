@@ -36,6 +36,9 @@ class UserList
         return $this->name;
     }
 
+    /**
+     * Checks if dissertation is in the list.
+     */
     function in_list($dissertation_id)
     {
         include '../../src/mysql_login.php';
@@ -48,6 +51,9 @@ class UserList
         return ($result->num_rows > 0);
     }
 
+    /**
+     * Creates list for the dissertation.
+     */
     function create_list()
     {
         include '../../src/mysql_login.php';
@@ -64,6 +70,9 @@ class UserList
         }
     }
 
+    /**
+     * Gets all of the items in list of dissertations.
+     */
     function items()
     {
         include '../../src/mysql_login.php';
@@ -75,6 +84,9 @@ class UserList
     }
 
 
+    /**
+     * Deletes the from the user's list of dissertations.
+     */
     function delete_list()
     {
         include '../../src/mysql_login.php';
@@ -95,6 +107,9 @@ class UserList
         }
     }
 
+    /**
+     * Deletes all of the lists by a user.
+     */
     function delete_all_lists()
     {
         include '../../src/mysql_login.php';
@@ -113,6 +128,9 @@ class UserList
         }
     }
 
+    /**
+     * Adds a new dissertation to a list.
+     */
     function add($dissertation_id)
     {
         include '../../src/mysql_login.php';
@@ -128,6 +146,9 @@ class UserList
         }
     }
 
+    /**
+     * Removes a dissertation from a list.
+     */
     function remove($dissertation_id)
     {
         include '../../src/mysql_login.php';
@@ -143,6 +164,9 @@ class UserList
         }
     }
 
+    /**
+     * Returns the number of items in the list of dissertations.
+     */
     function count_items()
     {
         return sizeof($this->items());

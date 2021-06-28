@@ -71,6 +71,9 @@ class User
         return $this->token;
     }
 
+    /**
+     * Query the user by the given email.
+     */
     function query_by_email($entered_email)
     {
         include 'mysql_login.php';
@@ -82,6 +85,9 @@ class User
         return $results;
     }
 
+    /**
+     * Query the user by the given ID.
+     */
     function query_by_id($entered_id)
     {
         include 'mysql_login.php';
@@ -102,6 +108,9 @@ class User
         }
     }
 
+    /**
+     * Query the user by the given token.
+     */
     function query_by_token($entered_token)
     {
         include 'mysql_login.php';
@@ -113,6 +122,9 @@ class User
         return $result;
     }
 
+    /**
+     * Verify if the email has been used.
+     */
     function email_used($entered_email)
     {
 
@@ -127,6 +139,9 @@ class User
         }
     }
 
+    /**
+     * Verify if the username has been used.
+     */
     function name_used($entered_name)
     {
         include 'mysql_login.php';
@@ -143,6 +158,9 @@ class User
         }
     }
 
+    /**
+     * Register the user to the database.
+     */
     function register($entered_email, $entered_name, $entered_password)
     {
         include 'mysql_login.php';
@@ -175,6 +193,9 @@ class User
         }
     }
 
+    /**
+     * Verify the user.
+     */
     function verify($entered_token)
     {
         include 'mysql_login.php';
@@ -191,6 +212,9 @@ class User
         }
     }
 
+    /**
+     * Log the user into the website.
+     */
     function login($entered_email, $entered_password)
     {
         session_start();
@@ -218,6 +242,9 @@ class User
         }
     }
 
+    /**
+     * Logout.
+     */
     function logout()
     {
         session_start();
@@ -227,6 +254,9 @@ class User
         session_destroy();
     }
 
+    /**
+     * Change the user's username.
+     */
     function change_username($new_name)
     {
         include 'mysql_login.php';
@@ -241,6 +271,9 @@ class User
         }
     }
 
+    /**
+     * Change the user's password.
+     */
     function change_password($new_hashed_password)
     {
         include 'mysql_login.php';

@@ -158,6 +158,9 @@ class SearchHistory
         return $this->url;
     }
 
+    /**
+     * Saves search into search history SQL table.
+     */
     function save_search()
     {
 
@@ -178,6 +181,7 @@ class SearchHistory
             $div3 = ",'";
         }
 
+        // Inserts new search into SQL table.
         $sql = "INSERT INTO search_history(user, title, author, abstract, " .
             "publisher, subject, department, degree, beg_date, end_date, date_searched, normal_search, url)" .
             " VALUES ('" . $this->get_user() . "','" . $this->get_title() . "','" .
@@ -195,6 +199,9 @@ class SearchHistory
     }
 
 
+    /**
+     * Verifies if search is already saved.
+     */
     function is_saved()
     {
         include '../../src/mysql_login.php';
@@ -205,6 +212,9 @@ class SearchHistory
         return ($result->num_rows > 0);
     }
 
+    /**
+     * Clears selected search history.
+     */
     function clear_search()
     {
         include '../../src/mysql_login.php';
@@ -218,6 +228,9 @@ class SearchHistory
         }
     }
 
+    /**
+     * Clears all entries in search history.
+     */
     function clear_all()
     {
         include '../../src/mysql_login.php';
@@ -231,6 +244,9 @@ class SearchHistory
         }
     }
 
+    /**
+     * Displays entry in search history.
+     */
     function entry()
     {
         echo '<input type="checkbox" class="delete" style="float:left" id="' . $this->get_id() . '" value="' . $this->get_url() . '">';
