@@ -27,7 +27,13 @@ $results = $connection->query($sql);
         </form>
         <br><br><br><br>
 
-        <?php while ($row = $results->fetch_assoc()) {
+        <?php 
+        
+        // Iterate through all of the search history entries.
+        while ($row = $results->fetch_assoc()) {
+
+            // Set all of the current search history entry values.
+            
             $search_history = new SearchHistory();
             $search_history->set_id($row['id']);
             $search_history->set_user($_SESSION['user_id']);

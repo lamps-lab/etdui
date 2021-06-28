@@ -2,6 +2,9 @@
 
 require '../../vendor/autoload.php';
 
+/**
+ * Creates a Elasticsearch query with the inputted search.
+ */
 function text_query($client, $search)
 {
     $query = $client->search([
@@ -41,6 +44,9 @@ function text_query($client, $search)
     return $query;
 }
 
+/**
+ * Creates an Elasticsearch date query.
+ */
 function date_query($client, $search) {
     $query = $client->search([
         'index' => 'dissertations',

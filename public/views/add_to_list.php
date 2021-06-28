@@ -12,9 +12,11 @@
             require_once "../../src/user_list.php";
             include '../../src/mysql_login.php';
 
+            // Query the lists that match the current users ID.
             $query = "SELECT * FROM user_dissertation_lists WHERE user='" . $_SESSION['user_id'] . "'";
             $results = $connection->query($query);
 
+            // Display all of the lists of the current user along with a checkbox for them.
             while ($row = $results->fetch_assoc()) {
                 echo '<div class="modal-header">';
                 echo '<slot>';

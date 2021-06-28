@@ -8,6 +8,7 @@ if (isset($_POST['text'])) {
 
     $text = $_POST['text'];
 
+    // Return an Elasticsearch query based on what has been typed.
     $query = $client->search([
         'index' => 'dissertations',
         'size' => 10,
@@ -30,9 +31,11 @@ if (isset($_POST['text'])) {
 
     $suggestions = [];
 
+    // Push each of the results in the suggestions array.
     foreach($results as $r) {
         array_push($suggestions, $r['_source']['title']);
     }
 
+    // Encode the suggestions into a JSON array.
     print json_encode($suggestions);
 }

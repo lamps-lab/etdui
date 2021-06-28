@@ -15,7 +15,9 @@
             </form>
             <?php
             session_start();
+
             if (isset($_SESSION['user_id'])) {
+                // If a user is signed in, display the advanced search button and insert entry button to the user.
                 echo '<button type="button" class="advanced-search-button" data-toggle="modal" data-target="#advanced-search-modal">
                     Advanced Search &#9881
                 </button>';
@@ -24,6 +26,7 @@
                 Insert Entry
                 </button>';
             } else {
+                // Otherwise, only display the advanced search button.
                 echo '<button type="button" style="width: 70%; float: none;" class="advanced-search-button" data-toggle="modal" data-target="#advanced-search-modal">
                     Advanced Search &#9881
                 </button>';

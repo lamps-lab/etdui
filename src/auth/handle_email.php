@@ -5,7 +5,9 @@ require_once '../../src/user.php';
 require_once '../../vendor/autoload.php';
 require_once '../../constants.php';
 
-
+/**
+ * Initializes the SwiftMailer class.
+ */
 function initialize_mailer()
 {
     // Create the Transport
@@ -19,6 +21,9 @@ function initialize_mailer()
     return $mailer;
 }
 
+/**
+ * Initalizes a SwiftMessage email object.
+ */
 function send_email($mailer, $sender, $receiver, $title, $body)
 {
     // Create a message
@@ -33,13 +38,18 @@ function send_email($mailer, $sender, $receiver, $title, $body)
 
 if (isset($_SESSION['user_id'])) {
 
+    /**
+     * Sends the email.
+     */
     function send_verification_email()
     {
         $user = new User();
         $user->query_by_id($_SESSION['user_id']);
 
+        // Initialize mailer object.
         $mailer = initialize_mailer();
 
+        // This body provides the user with the reset email link.
         $body = '<!DOCTYPE html>
                 <html lang="en">
                 

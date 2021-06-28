@@ -11,8 +11,12 @@ if (isset($_POST['handle'])) {
     $user_list->set_user($_POST['user_id']);
 
     if ($user_list->in_list($figure_id)) {
+        // If the list item is already in the list, clicking the button will
+        // remove the item from the list.
         $user_list->remove($figure_id);
     } else {
+        // If the item is not in the list, clicking the button will add the
+        // item to the list.
         $user_list->add($figure_id);
     }
 }

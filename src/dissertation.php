@@ -157,6 +157,9 @@ class Dissertation
         return $this->saved;
     }
 
+    /**
+     * Check if the dissertation has any likes.
+     */
     function has_likes()
     {
         include '../../src/mysql_login.php';
@@ -169,6 +172,9 @@ class Dissertation
         return ($result->num_rows > 0);
     }
 
+    /**
+     * Check if the dissertation is liked by the current user.
+     */
     function liked_by_user($user_id)
     {
         include '../../src/mysql_login.php';
@@ -181,6 +187,9 @@ class Dissertation
         return ($result->num_rows > 0);
     }
 
+    /**
+     * Get the number of likes of the current dissertation.
+     */
     function number_of_likes()
     {
         include '../../src/mysql_login.php';
@@ -200,6 +209,9 @@ class Dissertation
         return $likes;
     }
 
+    /**
+     * Check if the dissertation is saved into favorites.
+     */
     function is_saved($user_id)
     {
         include '../../src/mysql_login.php';
@@ -226,6 +238,9 @@ class Dissertation
     //     return $preview;
     // }
 
+    /**
+     * This function displays a result form of the dissertation. For example, what is displayed in the SERP.
+     */
     function result($entry)
     {
 
@@ -262,6 +277,7 @@ class Dissertation
             }
 
             if ($this->liked_by_user($_SESSION['user_id'])) {
+                // If the dissertation is liked, set the like button to liked.
                 $like_class = "liked";
             }
 
@@ -273,6 +289,9 @@ class Dissertation
         echo '<br><br><br>';
     }
 
+    /**
+     * This displays a summary of the dissertation. For example, what will be shown in the summary page.
+     */
     function summary()
     {
 
@@ -335,6 +354,9 @@ class Dissertation
     </div>";
     }
 
+    /**
+     * Removes the dissertation from the SQL table.
+     */
     function removeDissertation($user_id)
     {
         include '../mysql_login.php';
@@ -350,6 +372,9 @@ class Dissertation
         }
     }
 
+    /**
+     * Saves dissertation into the SQL table.
+     */
     function saveDissertation($user_id)
     {
         include '../mysql_login.php';
@@ -366,6 +391,9 @@ class Dissertation
         }
     }
 
+    /**
+     * When the user clicks the like button, the SQL table will be updated.
+     */
     function like_dissertation($user_id)
     {
         include '../mysql_login.php';
@@ -396,6 +424,9 @@ class Dissertation
         }
     }
 
+    /**
+     * When the user unlikes a dissertation, the SQL table will be updated.
+     */
     function unlike_dissertation($user_id)
     {
         include '../mysql_login.php';

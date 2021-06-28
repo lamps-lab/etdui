@@ -4,6 +4,7 @@ require_once '../user.php';
 
 if (isset($_GET['token'])) {
 
+    // HTML for reset password.
     $body = '<body>
                 <?php include "../../public/views/menu.php" ?>
                 <div class="flex-center position-ref full-height">
@@ -20,9 +21,11 @@ if (isset($_GET['token'])) {
 
     $token = $_GET['token'];
 
+    // Get the user by their token.
     $user = new User();
     $results = $user->query_by_token($token);
 
+    // Get the user ID.
     while ($row = $results->fetch_assoc()) {
         $user->set_id($row['id']);
     }
@@ -31,12 +34,14 @@ if (isset($_GET['token'])) {
 
         $new_password = "";
 
+        // Encrypt the newly entered password.
         if (isset($_POST['new_password'])) {
             $new_password = password_hash($_POST["new_password"], PASSWORD_DEFAULT);
         }
 
         if ($user->change_password($new_password)) {
 
+            // If password is successfully changed, tell the user.
             $body =  '<body>
                         <?php include "../../public/views/menu.php" ?>
                         

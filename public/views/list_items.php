@@ -35,12 +35,14 @@ include 'header.php';
 
         $user_id = $_SESSION['user_id'];
 
+        // Query the list items that match the current list ID.
         $query = "SELECT * FROM user_dissertation_list_items WHERE list='" . $list_id . "';";
 
         $results = $connection->query($query);
 
         $entry = 0;
 
+        // Iterate through all of the list items.
         while ($row = $results->fetch_assoc()) {
             $client = Elasticsearch\ClientBuilder::create()->build();
 
@@ -48,6 +50,7 @@ include 'header.php';
 
             $dissertation->set_id($row['dissertation_id']);
 
+            // Select the dissertation metadata from Elasticsearch by the ID.
             $params = [
                 'index' => 'dissertations',
                 'id' => $dissertation->get_id()
@@ -55,6 +58,7 @@ include 'header.php';
         
             $response = $client->get($params);
         
+            // Set all of the dissertation values.
             $dissertation->set_title($response['_source']['title']);
             $dissertation->set_author($response['_source']['contributor_author']);
             $dissertation->set_abstract($response['_source']['description_abstract']);

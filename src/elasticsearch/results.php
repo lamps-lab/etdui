@@ -268,6 +268,7 @@ include '../../public/views/header.php';
 
     $counter = 0;
 
+    // Pagination...
     if ($total_pages > 0) {
         if ($page > 2) {
             echo '<a href="' . $current_url . '&page=' . $first_page . '"> << </a>';

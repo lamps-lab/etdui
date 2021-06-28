@@ -8,6 +8,7 @@ if (isset($_POST['handled'])) {
 
     $search_history = new SearchHistory();
 
+    // Set the search history values.
     $search_history->set_user($_SESSION['user_id']);
     $search_history->set_title($_POST['title']);
     $search_history->set_author($_POST['author']);
@@ -23,14 +24,18 @@ if (isset($_POST['handled'])) {
     $search_history->set_url($_POST['url']);
 
     if ($search_history->is_saved()) {
+        // If the search history is saved, clicking the button will clear the search history.
         $search_history->clear_search();
         echo 'cleared';
     } else {
+        // If the search history is not saved, clicking the button will save the search history.
         $search_history->save_search();
     }
 }
 
 if (isset($_POST['clear'])) {
+
+    // If the clear search history button is clicked, clear all search history.
     $search_history = new SearchHistory();
 
     $search_history->clear_all();

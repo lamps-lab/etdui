@@ -8,6 +8,7 @@ require_once '../../src/search_history.php';
 
 $search_history = new SearchHistory();
 
+// Set the search history entry values.
 $search_history->set_user($_SESSION['user_id']);
 $search_history->set_title($title_v);
 $search_history->set_author($author_v);
@@ -25,7 +26,9 @@ if (isset($_SESSION['user_id'])) {
     $class = "save-history";
 
     if ($search_history->is_saved()) {
+        // If the search entry is already saved, set the CSS button class to "saved-history".
         $class = "saved-history";
     }
+
     echo '<button class=' . $class . ' id="save_history" type="button" onClick="handleSearchHistory()"></button><br><br><br><br><br>';
 }

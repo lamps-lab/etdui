@@ -33,6 +33,8 @@ if (isset($_GET['dissertation-id'])) {
     echo "<body>";
     include '../../public/views/menu.php';
     echo "<br><br><br>";
+
+    // Call the dissertation summary function.
     $dissertation->summary();
     echo '<script src="../../public/js/searchFunctions.js"></script>';
     echo "</body>
