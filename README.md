@@ -138,6 +138,10 @@ and replace it with
 $captcha_confirmed = true;
 ```
 ## Using the website
+Move the clone directory to /var/www/html/
+
+Once running, access the website through: http://127.0.0.1/etdui/public/views/index.php or http://localhost/ETD-Search/public/views/index.php
+
 Before entering the website, you must enter the admin password: 313ctr1c1+y
 
 ## Contact
