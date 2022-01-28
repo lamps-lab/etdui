@@ -113,7 +113,7 @@ CREATE TABLE `user_lists` (
 ```
 
 ## Tweaks for local machine
-This website is being hosted on a server, which requires certain configurations. Because of this, you may need to change a few things to have the website run accurately on your local machine. Go to the constants.php file to change certain variable values.
+This website is being hosted on a server, which requires certain configurations. Because of this, you may need to change a few things to have the website run accurately on your local machine. Go to the constants.php file to change certain variable values. You may want to include constants.php into the .gitignore file if you plan on pushing updates to the github repo.
 
 For example, SQL_SERVER, SQL_USERNAME, and SQL_PASSWORD should be based on where you are running your SQL server and your SQL user credentials. If you're running it locally, SQL_SERVER should most likely be set to "localhost". Same with Elasticsearch.
 
