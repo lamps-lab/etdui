@@ -142,3 +142,8 @@ Before entering the website, you must enter the admin password: 313ctr1c1+y
 
 ## Contact
 If you have any questions, send me an email: [wshie002@odu.edu](mailto:wshie002@odu.edu)
+
+## Useful links
+[Elasticsearch PHP API](https://www.elastic.co/guide/en/elasticsearch/client/php-api/current/index.html)
+
+[MySQL PHP API](https://www.w3schools.com/php/php_mysql_intro.asp)
