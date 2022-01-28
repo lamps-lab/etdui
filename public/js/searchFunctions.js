@@ -68,9 +68,6 @@ function handleLike(entry) {
     });
 }
 
-/**
- * Calls handle search history PHP script.
- */
 function handleSearchHistory() {
     var normalSearch = $('#search').val();
     var title = $('#title').val();
@@ -103,17 +100,12 @@ function handleSearchHistory() {
         },
         success: function(data) {
             console.log(data);
-            // If search history is successfully saved or unsaved,
-            // toggle the save search history button.
             $('#save_history').toggleClass('saved-history');
             $('#save_history').toggleClass('save-history');
         }
     });
 }
 
-/**
- * Delete the checked search history.
- */
 function deleteCheckedHistory() {
     var searchIds = [];
 
@@ -176,11 +168,6 @@ function speechToText(micId, inputId) {
     speechRecognition.start();
 }
 
-/**
- * Return suggested search results from the PHP script, and parse it
- * into a JSON array that will be used for the autocomplete feature.
- * @param {*} elementId 
- */
 function suggestResults(elementId) {
 
     var input = document.getElementById(elementId).value;
@@ -193,6 +180,8 @@ function suggestResults(elementId) {
         },
         success: function(data) {
 
+            console.log(data)
+
             $('#' + elementId).autocomplete({
                 source: JSON.parse(data)
             });
@@ -200,13 +189,15 @@ function suggestResults(elementId) {
     });
 }
 
-/**
- * Call the add tag functionality in PHP.
- * @param {*} figureId 
- */
-function addTag(figureId) {
+function addTag(dissertationId) {
 
-    var tag = $('#tag').val();
+    var tag = "";
+
+    if ($('#tag').val()) {
+        tag = $('#tag').val();
+    } else {
+        tag = $('#tag-' + dissertationId).val();
+    }
 
     if (tag) {
         $.ajax({
@@ -215,9 +206,11 @@ function addTag(figureId) {
             data: {
                 handle: "added",
                 tag: tag,
-                figure_id: figureId
+                dissertation_id: dissertationId
             },
             success: function(data) {
+
+                console.log(data)
 
                 if (data == 1) {
                     $('#tag-error').text("The tag is already used.");
@@ -233,10 +226,6 @@ function addTag(figureId) {
     }
 }
 
-/**
- * Calls remove tag functionality in the PHP script.
- * @param {*} tagId 
- */
 function removeTag(tagId) {
     $.ajax({
         type: "POST",
@@ -252,11 +241,6 @@ function removeTag(tagId) {
     });
 }
 
-/**
- * Toggle the show more button and show more if show more has been clicked.
- * Set to preview mode if show less has been clicked.
- * @param {*} entry 
- */
 function showMore(entry) {
     $('#show-more-' + entry).toggle();
     $('#preview-' + entry).toggle();
@@ -270,31 +254,11 @@ function showMore(entry) {
     }
 }
 
-/**
- * Call the handle list item PHP script.
- * @param {*} listId 
- * @param {*} userId 
- * @param {*} dissertationId 
- */
-function handleListItem(listId, userId, dissertationId) {
-    $.ajax({
-        type: "POST",
-        url: "../../src/elasticsearch/handle_list_item.php",
-        data: {
-            handle: "handled",
-            list_id: listId,
-            user_id: userId,
-            dissertation_id: dissertationId
-        },
-        success: function(data) {
+function handleListItem() {
+    alert("test");
 
-        }
-    });
 }
 
-/**
- * Call the delete list PHP script.
- */
 function deleteList() {
     $('.delete:checkbox:checked').each(function() {
         var checkboxId = '#' + $(this).attr('id');
@@ -313,4 +277,150 @@ function deleteList() {
             }
         });
     });
+}
+
+function handleListItem(listId, userId, dissertationId) {
+    $.ajax({
+        type: "POST",
+        url: "../../src/elasticsearch/handle_list_item.php",
+        data: {
+            handle: "handled",
+            list_id: listId,
+            user_id: userId,
+            dissertation_id: dissertationId
+        },
+        success: function(data) {
+
+        }
+    });
+}
+
+var counter = 0;
+
+function appendAddListElement(dissertationId) {
+
+    $('#add-to-list-modal-' + dissertationId).append("<div class='modal-header' id='add-list-" + counter + "'><slot>" +
+        "List Name: <input type='text' id='name-" + counter + "' />" +
+        "<button type='button' onClick='addList(" + counter + ",\"" + dissertationId + "\")' class='btn btn-primary'>Add List</button>" +
+        "</slot>");
+
+    counter++;
+}
+
+function addList(listEntryNum, dissertationId) {
+    listName = $('#name-' + listEntryNum).val();
+
+    $.ajax({
+        type: "POST",
+        url: "../../src/elasticsearch/handle_list.php",
+        data: {
+            name2: listName,
+        },
+        success: function(data) {
+            listObject = JSON.parse(data);
+
+            var newListElement = "<div class='modal-header'><slot>" + listName +
+                "<input type='checkbox' onclick='handleListItem(\"" + listObject.listId + "\", \"" + listObject.userId + "\", \"" + dissertationId + "\")'></slot></div>";
+
+            $('#add-list-' + listEntryNum).remove();
+            $('.modal-body').append(newListElement);
+
+        }
+    });
+}
+
+var authorsList = "";
+var numAuthorsVisible = 0;
+var authorStart = 0;
+
+function showAuthors() {
+    var authorsList = "";
+    numAuthorsVisible += 20;
+
+    $.ajax({
+        type: "POST",
+        url: "../../src/elasticsearch/author_list_action.php",
+        success: function(data) {
+            authorsArray = JSON.parse(data);
+
+            authorsArray.sort(sortAuthorAlphabetically("author"));
+
+            for (i = authorStart; i < numAuthorsVisible; i++) {
+                if ($("#author").val().indexOf(authorsArray[i]["author"]) >= 0) {
+                    authorsList += authorsArray[i]["author"] + " <input type='checkbox' class='author-entries' value='" + authorsArray[i]["author"] + "' id='author-" + i + "' name='advanced_search' onclick=addAuthorToSearch(" + i + ") onchange='this.form.submit()' checked><br>";
+                } else if ($("#author").val().indexOf(authorsArray[i]["author"]) < 0) {
+                    authorsList += authorsArray[i]["author"] + " <input type='checkbox' class='author-entries' value='" + authorsArray[i]["author"] + "' id='author-" + i + "' name='advanced_search' onclick=addAuthorToSearch(" + i + ") onchange='this.form.submit()'><br>";
+                }
+
+            }
+
+            authorStart += 19;
+
+            $('#authors-span').append(authorsList);
+        }
+    });
+}
+
+function sortAuthorAlphabetically(prop) {
+
+    return function(a, b) {
+        // console.log(a[prop] + " " + b[prop])
+        if (a[prop].toLowerCase() > b[prop].toLowerCase()) {
+            return 1;
+        } else if (a[prop].toLowerCase() < b[prop].toLowerCase()) {
+            return -1;
+        }
+
+        return 0;
+    }
+}
+
+function addAuthorToSearch(id) {
+
+    var checkboxId = "#author-" + id;
+
+    // alert($(checkboxId).val())
+
+    if ($(checkboxId).is(":checked")) {
+        authorName = $(checkboxId).val();
+        if ($("#author").val().indexOf(authorName) < 0) {
+            $('#author').val($('#author').val() + " " + authorName);
+        }
+
+        // callAdvancedSearch();
+    } else if ($(checkboxId).not(":checked")) {;
+        authorName = $(checkboxId).val();
+        if ($("#author").val().indexOf(authorName) >= 0) {
+
+            $('#author').val($('#author').val().replace(authorName, ""));
+        }
+        // callAdvancedSearch();
+    }
+}
+
+// function callAdvancedSearch() {
+//     $.ajax({
+//         type: "GET",
+//         url: "../../src/elasticsearch/results.php",
+//         data: {
+//             advanced_search: "",
+//             title: $("#title").val(),
+//             author: $("#author").val(),
+//             abstract: $("#abstract").val(),
+//             publisher: $("#publisher").val(),
+//             subject: $("#subject").val(),
+//             department: $("#department").val(),
+//             degree: $("#degree").val(),
+//             start_date: $("#start_date").val(),
+//             end_date: $("#end_date").val()
+//         },
+//         success: function (data) {
+//             // window.location.href = data.redirect;
+//             console.log(data);
+//         }
+//     });
+// }
+
+function backToResults(previousURL) {
+    window.location.replace("https://" + previousURL);
 }

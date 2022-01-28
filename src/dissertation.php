@@ -6,13 +6,15 @@ class Dissertation
     private $title;
     private $url;
     private $author;
+    private $adivsor;
+    private $discipline;
+    private $university;
     private $abstract;
-    private $preview;
     private $publisher;
     private $subject;
     private $department;
     private $degree;
-    private $date;
+    private $year;
     private $likes;
     private $liked;
     private $saved;
@@ -57,6 +59,16 @@ class Dissertation
         return $this->author;
     }
 
+    function set_advisor($adivsor)
+    {
+        $this->adivsor = $adivsor;
+    }
+
+    function get_adivsor()
+    {
+        return $this->adivsor;
+    }
+
     function set_abstract($abstract)
     {
         $this->abstract = $abstract;
@@ -65,16 +77,6 @@ class Dissertation
     function get_abstract()
     {
         return $this->abstract;
-    }
-
-    function set_preview($preview)
-    {
-        $this->preview = $preview;
-    }
-
-    function get_preview()
-    {
-        return $this->preview;
     }
 
     function set_publisher($publisher)
@@ -117,14 +119,14 @@ class Dissertation
         return $this->degree;
     }
 
-    function set_date($date)
+    function set_year($year)
     {
-        $this->date = $date;
+        $this->year = $year;
     }
 
-    function get_date()
+    function get_year()
     {
-        return $this->date;
+        return $this->year;
     }
 
     function set_likes($likes)
@@ -157,9 +159,6 @@ class Dissertation
         return $this->saved;
     }
 
-    /**
-     * Check if the dissertation has any likes.
-     */
     function has_likes()
     {
         include '../../src/mysql_login.php';
@@ -172,11 +171,9 @@ class Dissertation
         return ($result->num_rows > 0);
     }
 
-    /**
-     * Check if the dissertation is liked by the current user.
-     */
     function liked_by_user($user_id)
     {
+    
         include '../../src/mysql_login.php';
 
         $query = "SELECT * FROM user_likes WHERE dissertation_id='" . $this->get_id() .
@@ -187,9 +184,6 @@ class Dissertation
         return ($result->num_rows > 0);
     }
 
-    /**
-     * Get the number of likes of the current dissertation.
-     */
     function number_of_likes()
     {
         include '../../src/mysql_login.php';
@@ -209,9 +203,6 @@ class Dissertation
         return $likes;
     }
 
-    /**
-     * Check if the dissertation is saved into favorites.
-     */
     function is_saved($user_id)
     {
         include '../../src/mysql_login.php';
@@ -224,38 +215,40 @@ class Dissertation
         return ($result->num_rows > 0);
     }
 
-    // function shorten_abstract($entered_abstract)
-    // {
-    //     $preview = "";
+    function shorten_abstract($entered_abstract)
+    {
+        $preview = "";
 
-    //     for ($i = 0; $i < 300; $i++) {
+        for ($i = 0; $i < 300; $i++) {
 
-    //         // Create an abstract preview, which is the first
-    //         // 300 characters of the abstract.
-    //         $preview = $preview . $entered_abstract[$i];
-    //     }
+            // Create an abstract preview, which is the first
+            // 300 characters of the abstract.
+            $preview = $preview . $entered_abstract[$i];
+        }
 
-    //     return $preview;
-    // }
+        return $preview;
+    }
 
-    /**
-     * This function displays a result form of the dissertation. For example, what is displayed in the SERP.
-     */
     function result($entry)
     {
-
         include "../../public/views/add_to_list.php";
+        include "../../public/views/add_tag.php";
 
         $likes = $this->number_of_likes();
+
+        $current_url = "$_SERVER[HTTP_HOST]/~penzias$_SERVER[REQUEST_URI]";
 
         echo '<form action = "../../public/views/summary.php" method ="get">';
         echo '<button class="dissertation-title" type="submit" name="dissertation-id" value="' . $this->get_id() . '">' . $this->get_title() . '</button><br><br>';
         echo '<b><u>Author(s):</u></b> ' . $this->get_author() . '<br>';
-        echo '<b><u>Publisher:</u></b> ' . $this->get_publisher() . '<br>';
-        echo '<b><u>Date:</u></b> ' . $this->get_date() . '<br><br>';
+        echo '<b><u>University:</u></b> ' . $this->get_publisher() . '<br>';
+        echo '<b><u>Year:</u></b> ' . $this->get_year() . '<br><br>';
+        echo "<input type='hidden' name='previous-url' value='$current_url'/>";
         echo '</form>';
 
-        echo "<p><span id='preview-$entry'>". $this->get_preview() . " </span> <span id='dots-$entry'>...</span><span id='show-more-$entry' style='display: none'>" . $this->get_abstract() . "</span></p><br>";
+        $preview = $this->shorten_abstract($this->get_abstract());
+
+        echo "<p><span id='preview-$entry'> $preview </span> <span id='dots-$entry'>...</span><span id='show-more-$entry' style='display: none'>" . $this->get_abstract() . "</span></p><br>";
 
         echo "<button id='show-more-button-$entry' class='download' onClick='showMore($entry)'>Show More</button>";
         echo "<br><br><br><br>";
@@ -264,34 +257,25 @@ class Dissertation
 
         echo '<button type="button" class="add-to-list" data-toggle="modal" data-target="#add-to-list-' . $this->get_id() . '"></button>';
 
-        echo '<form action="../../src/elasticsearch/download_docs.php" method="POST">';
-        echo '<button class ="download" name="download_id" id=' . $downloadId . ' type="submit" value="' . $this->get_id() . '">Download</button>';
-        echo '</form>';
-
         if (isset($_SESSION['user_id'])) {
-            $save_class = "save";
             $like_class = "like";
 
-            if ($this->is_saved($_SESSION['user_id'])) {
-                $save_class = "saved";
-            }
-
             if ($this->liked_by_user($_SESSION['user_id'])) {
-                // If the dissertation is liked, set the like button to liked.
                 $like_class = "liked";
             }
 
-            echo '<button class=' . $save_class . ' id="' . $entry . '" onclick="handleDissertation(' . $entry . ')" name="dissertation_id" type="button" value="' . $this->get_id() . '"></button>';
             echo '<button class=' . $like_class . ' id="' . $entry . '-like" onclick="handleLike(' . $entry . ')" name="like_id" type="button" value="' . $this->get_id() . '"></button>';
+            echo "<button class='download' data-toggle='modal' data-target='#add-tag-" . $this->get_id() . "'>Tags</button>";
         }
+
+        // echo "<form action='../../src/elasticsearch/download_docs.php' method='post'>
+        //         <button class='download' value='" .$this->get_id()."'name='download_id' type='submit'>Download</button>
+        //         </form>";
 
         echo '<p class="likes" id="' . $entry . '-likes">' . $likes . ' Like(s)</p>';
         echo '<br><br><br>';
     }
 
-    /**
-     * This displays a summary of the dissertation. For example, what will be shown in the summary page.
-     */
     function summary()
     {
 
@@ -301,10 +285,10 @@ class Dissertation
 
         echo "<div class='content'>
         <h4>" . $this->get_title() . "</h4><br>
-        <b><a href='" . $this->get_url() . "'>" . $this->get_url() . "</a></b><br>
+        <p style='color:blue;'><b><a href='" . $this->get_url() . "'>" . $this->get_url() . "</a></b></p>
         <b><u>Author(s):</u></b> &nbsp;" . $this->get_author() . "<br>
-        <b><u>Publisher:</u></b> &nbsp;" . $this->get_publisher() . "<br>
-        <b><u>Date Issued:</u></b> &nbsp;" . $this->get_date() . "<br><br>
+        <b><u>University:</u></b> &nbsp;" . $this->get_publisher() . "<br>
+        <b><u>Year Issued:</u></b> &nbsp;" . $this->get_year() . "<br><br>
         <h5><b><u>Abstract</u></b></h5>
         <div class='container'>" . $this->get_abstract() . "</div>
         <br><br><br>";
@@ -316,7 +300,7 @@ class Dissertation
             <br><br>";
         }
 
-        $query = "SELECT * FROM dissertation_tags WHERE user='"
+        $query = "SELECT * FROM tags WHERE user='"
             . $_SESSION['user_id'] . "' AND dissertation='" . $this->get_id() . "';";
 
         $results = $connection->query($query);
@@ -331,7 +315,7 @@ class Dissertation
             echo '&nbsp;';
         }
 
-        $query = "SELECT * FROM dissertation_tags WHERE user<> '"
+        $query = "SELECT * FROM tags WHERE user<> '"
             . $_SESSION['user_id'] . "' AND dissertation='" . $this->get_id() . "';";
 
         $results = $connection->query($query);
@@ -347,16 +331,46 @@ class Dissertation
 
         echo '<br><br><br>';
 
-        echo "<form action='../../src/elasticsearch/download_docs.php' method='post'>
-        <button class='download2' value='" . $this->get_id() . "'name='download_id' type='submit'>Download</button>
-        </form>
-        <br><br>
-    </div>";
+    //     echo '<div class="w3-content w3-display-container">';
+
+    //     $figures = preg_grep('~\.(jpeg|jpg|PNG)$~',scandir("/var/www/html/secure_html/samples/figures"));
+
+    //     echo '<h4>Figures</h4>';
+    //     foreach($figures as $figure)
+    //     {
+    //         echo "<img class='figure-slides' src='https://www.cs.odu.edu/~penzias/samples/figures/$figure' style='width:100%'>";
+    //     }
+    
+
+    //     // <img class="mySlides" src="img_snowtops.jpg" style="width:100%">
+    //     // <img class="mySlides" src="img_lights.jpg" style="width:100%">
+    //     // <img class="mySlides" src="img_mountains.jpg" style="width:100%">
+    //     // <img class="mySlides" src="img_forest.jpg" style="width:100%">
+      
+    //     echo '<button class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+    //     <button class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+    //   </div>';
+
+    //     echo '<div class="w3-content w3-display-container">';
+    //     echo '<br><br><h4>Tables</h4>';
+    //     $tables = preg_grep('~\.(jpeg|jpg|PNG)$~',scandir("/var/www/html/secure_html/samples/tables"));
+    //     foreach($tables as $table)
+    //     {
+    //         echo "<img class='slides' src='https://www.cs.odu.edu/~penzias/samples/tables/$table' style='width:100%'>";
+    //     }
+    //     echo '<button class="w3-button w3-black w3-display-left" onclick="plusDivs2(-1)">&#10094;</button>
+    //     <button class="w3-button w3-black w3-display-right" onclick="plusDivs2(1)">&#10095;</button>
+    //   </div>';
+
+    //     echo "<form action='../../src/elasticsearch/download_docs.php' method='post'>
+    //     <button class='download2' value='" . $this->get_id() . "'name='download_id' type='submit'>Download</button>
+    //     </form>
+    //     <br><br>
+    // </div>";
+
+        echo '</div>';
     }
 
-    /**
-     * Removes the dissertation from the SQL table.
-     */
     function removeDissertation($user_id)
     {
         include '../mysql_login.php';
@@ -372,9 +386,6 @@ class Dissertation
         }
     }
 
-    /**
-     * Saves dissertation into the SQL table.
-     */
     function saveDissertation($user_id)
     {
         include '../mysql_login.php';
@@ -391,9 +402,6 @@ class Dissertation
         }
     }
 
-    /**
-     * When the user clicks the like button, the SQL table will be updated.
-     */
     function like_dissertation($user_id)
     {
         include '../mysql_login.php';
@@ -424,9 +432,6 @@ class Dissertation
         }
     }
 
-    /**
-     * When the user unlikes a dissertation, the SQL table will be updated.
-     */
     function unlike_dissertation($user_id)
     {
         include '../mysql_login.php';

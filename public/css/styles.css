@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     background-color: #fff;
     color: #636b6f;
     font-family: 'Nunito', sans-serif;
@@ -227,6 +228,21 @@ button.liked:hover::before {
     content: "Unlike";
 }
 
+button.show-authors {
+    margin-right: 10px;
+    width: 50%;
+    padding: 10px;
+    background: #00BFFF;
+    font-size: 15px;
+    border: 1px solid gray;
+    cursor: pointer;
+    border-radius: 25px;
+}
+
+button.show-authors:hover {
+    background: #045292;
+}
+
 button.download {
     float: left;
     margin-right: 10px;
@@ -283,7 +299,8 @@ li.menu a:hover:not(.active) {
     color: white;
 }
 
-form.login input[type=text], form.login input[type=password] {
+form.login input[type=text],
+form.login input[type=password] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -319,10 +336,38 @@ p.error {
     color: red;
 }
 
+.attribute {
+    padding-bottom: 50px;
+}
+
+label.attribute-label {
+    float: left;
+}
+
+input.attribute-input {
+    float: right;
+}
+
+input.author-entries {
+    float: right;
+}
+
 .results {
     margin-left: auto;
     margin-right: auto;
+    width: 90%;
+}
+
+.results-container {
     width: 70%;
+    float: left;
+    margin-left: 5%;
+}
+
+.faceted-search-container {
+    width: 20%;
+    float: left;
+    display: block;
 }
 
 ul.results {
@@ -471,4 +516,16 @@ button.add-to-list::before {
 
 button.add-to-list:hover {
     background: #045292;
+}
+
+ul.authors-list {
+    list-style-type: none;
+}
+
+.figure-slides {
+    display: none;
+}
+
+.table-slides {
+    display: none;
 }

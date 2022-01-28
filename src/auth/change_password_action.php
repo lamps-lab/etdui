@@ -43,7 +43,6 @@ if (isset($_POST['send_reset_link'])) {
 
         require_once 'handle_email.php';
 
-        // If the user clicks the reset password button, call the reset password function.
         send_password_reset($email);
     }
 

@@ -58,9 +58,6 @@ function no_inputs($title, $author, $abstract, $publisher, $subject, $department
     return $all_empty;
 }
 
-/**
- * Build the Elasticsearch query.
- */
 function query_builder($query_array, $field, $input, $input_2)
 {
     if ($field == 'date_issued') {
@@ -73,26 +70,23 @@ function query_builder($query_array, $field, $input, $input_2)
             ]
         ];
 
-        // If the input is a a date, push the date in the array.
         array_push($query_array['body']['query']['bool']['must'], $date_query);
     } else {
-        // If the input is not a date, push it into the query with the match field.
         array_push($query_array['body']['query']['bool']['must'], ['match' => [$field => $input]]);
     }
     return $query_array;
 }
 
-/**
- * This function handles advanced search.
- */
 function advanced_search($title, $author, $abstract, $publisher, $subject, $department, $degree, $beg_date, $end_date)
 {
-    $client = Elasticsearch\ClientBuilder::create()->build();
+    include '../../constants.php';
+    
+    $client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
 
     // Initialize a string builder for the advanced search query.
     $query_array = [
         'index' => 'dissertations',
-        'size' => 5000,
+        'size' => 10000,
         'body' => [
             'query' => [
                 'bool' => [
@@ -103,7 +97,6 @@ function advanced_search($title, $author, $abstract, $publisher, $subject, $depa
     ];
 
 
-    // If inputs are not empty, put them into the query builder.
     if (!empty($title)) {
         $query_array = query_builder($query_array, 'title', $title, 0);
     }

@@ -1,4 +1,9 @@
 <?php
+
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
 include 'normal_search.php';
 include 'advanced_search_action.php';
 
@@ -173,7 +178,6 @@ if (isset($_GET['advanced_search'])) {
         $beg_date,
         $end_date
     );
-
 }
 
 include '../../public/views/header.php';
@@ -184,7 +188,6 @@ include '../../public/views/header.php';
     session_start();
     include '../../public/views/menu.php';
     include '../../public/views/search_bar.php';
-    include '../../public/views/advanced_search.php';
     require_once '../dissertation.php';
 
     $total_results = count($results);
@@ -214,30 +217,16 @@ include '../../public/views/header.php';
 
     $entry = 0;
 
-    function shorten_abstract($entered_abstract)
-    {
-        $preview = "";
+    include '../../public/views/faceted_search.php';
 
-        for ($i = 0; $i < 300; $i++) {
-
-            // Create an abstract preview, which is the first
-            // 300 characters of the abstract.
-            $preview = $preview . $entered_abstract[$i];
-        }
-
-        return $preview;
-    }
-
+    echo '<div class="results-container">';
     foreach ($results as $r) {
-
         // Set the dissertation data variables.
         $abstract = strip_tags($r['_source']['description_abstract']);
         $title = $r['_source']['title'];
         $author = $r['_source']['contributor_author'];
         $publisher = $r['_source']['publisher'];
         $date_issued = $r['_source']['date_issued'];
-
-        $preview = shorten_abstract($abstract);
 
         $dissertation = new Dissertation();
 
@@ -249,13 +238,15 @@ include '../../public/views/header.php';
         $dissertation->set_author(str_ireplace($temp_array, $replace, $author));
         $dissertation->set_publisher(str_ireplace($temp_array, $replace, $publisher));
         $dissertation->set_abstract(str_ireplace($temp_array, $replace, $abstract));
-        $dissertation->set_preview(str_ireplace($temp_array, $replace, $preview));
-        $dissertation->set_date(str_ireplace($temp_array, $replace, $date_issued));
+        $dissertation->set_year(str_ireplace($temp_array, $replace, $date_issued));
 
         $dissertation->result($entry);
 
         $entry += 1;
+        
     }
+
+    echo '</div>';
 
     $current_url = $_SERVER["REQUEST_URI"];
 
@@ -268,7 +259,6 @@ include '../../public/views/header.php';
 
     $counter = 0;
 
-    // Pagination...
     if ($total_pages > 0) {
         if ($page > 2) {
             echo '<a href="' . $current_url . '&page=' . $first_page . '"> << </a>';
@@ -297,7 +287,7 @@ include '../../public/views/header.php';
     }
     ?>
 
-    <script src="../../public/js/searchFunctions.js"></script>
+    <script src="../../public/js/searchFunctions.js" type="text/javascript"></script>
 </body>
 
 </html>

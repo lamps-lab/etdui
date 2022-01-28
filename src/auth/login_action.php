@@ -1,5 +1,9 @@
 <?php
 
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
+
 require_once '../user.php';
 include '../../constants.php';
 
@@ -38,6 +42,13 @@ if (isset($_POST['submit'])) {
         } else {
 
             if ($user->login($email, $password)) {
+                
+                $file_name = ETD_LOGS_PATH . explode("@", $email)[0] . ".txt";
+                // echo $file_name;
+                $log_file = fopen($file_name, "a");
+                $date = date('m/d/Y h:i:s a', time());
+                $data = "$date: Logged In\n";
+                fwrite($log_file, $data);
                 echo 1;
             } else {
                 echo 2;

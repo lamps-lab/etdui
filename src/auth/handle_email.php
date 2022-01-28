@@ -5,9 +5,7 @@ require_once '../../src/user.php';
 require_once '../../vendor/autoload.php';
 require_once '../../constants.php';
 
-/**
- * Initializes the SwiftMailer class.
- */
+
 function initialize_mailer()
 {
     // Create the Transport
@@ -21,9 +19,6 @@ function initialize_mailer()
     return $mailer;
 }
 
-/**
- * Initalizes a SwiftMessage email object.
- */
 function send_email($mailer, $sender, $receiver, $title, $body)
 {
     // Create a message
@@ -38,37 +33,32 @@ function send_email($mailer, $sender, $receiver, $title, $body)
 
 if (isset($_SESSION['user_id'])) {
 
-    /**
-     * Sends the email.
-     */
     function send_verification_email()
     {
         $user = new User();
         $user->query_by_id($_SESSION['user_id']);
 
-        // Initialize mailer object.
         $mailer = initialize_mailer();
 
-        // This body provides the user with the reset email link.
         $body = '<!DOCTYPE html>
                 <html lang="en">
                 
                 <head>
                     <meta charset="UTF-8">
-                    <title> Shields Search Verificaton</title>
+                    <title> ETD Search Verificaton</title>
                 </head>
                 
                 <body>
                     <p> Thank you for signing up to Shields Search! Please click on the link
                         to verify your email!
                     </p>
-                    <a href="http://localhost/Web-Programming/src/auth/verified.php?token=' . $user->get_token() . '">
+                    <a href="https://www.cs.odu.edu/~penzias/ETD-Search/src/auth/verified.php?token=' . $user->get_token() . '">
                     Verify your email. </a>
                 </body>
                 
                 </html>';
 
-        $title = "Shields Search Account Email Verification";
+        $title = "ETD Search Account Email Verification";
         $sender = EMAIL;
         $receiver = $user->get_email();
 
@@ -92,7 +82,7 @@ function send_password_reset($email)
                 
                 <head>
                     <meta charset="UTF-8">
-                    <title> Shields Search Password Reset</title>
+                    <title> ETD Search Password Reset</title>
                 </head>
                 
                 <body>
@@ -102,13 +92,13 @@ function send_password_reset($email)
                         If you did not request a password reset, no further
                         action is required.
                     </p>
-                    <a href="http://localhost/Web-Programming/src/auth/reset_forgotten_password.php?token=' . $user->get_token() . '">
+                    <a href="https://www.cs.odu.edu/~penzias/ETD-Search/src/auth/reset_forgotten_password.php?token=' . $user->get_token() . '">
                     Reset Password. </a>
                 </body>
                 
                 </html>';
 
-    $title = "Shields Search Reset Password";
+    $title = "ETD Search Reset Password";
     $sender = EMAIL;
     $receiver = $email;
 

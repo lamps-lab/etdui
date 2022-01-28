@@ -5,7 +5,7 @@ include '../../constants.php';
 
 if (isset($_POST['submit'])) {
     // Initialize all of the registration variables.
-    $email = $username = $password = $confirm_password = "";
+    $email = $username = $password = $confirm_password = $school = "";
 
     $passwords_confirmed = $email_valid = $username_valid = $captcha_confirmed = false;
 
@@ -52,14 +52,12 @@ if (isset($_POST['submit'])) {
         $email_valid = true;
     }
 
-    // If the username is already in use, warn the user.
     if ($user->name_used($username)) {
         echo 2;
     } else {
         $username_valid = true;
     }
 
-    // Validate the reCAPTCHA response.
     if ($response->success) {
         $captcha_confirmed = true;
     } else {
@@ -67,7 +65,6 @@ if (isset($_POST['submit'])) {
     }
 
     if ($email_valid && $username_valid && $passwords_confirmed && $captcha_confirmed) {
-        // If all factors are validated, register the user.
         if ($user->register($email, $username, $password)) {
             echo 4;
         }

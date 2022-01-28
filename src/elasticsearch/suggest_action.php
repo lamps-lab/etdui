@@ -1,14 +1,18 @@
 <?php
 
-require '../../vendor/autoload.php';
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
-$client = Elasticsearch\ClientBuilder::create()->build();
+require '../../vendor/autoload.php';
+include '../../constants.php';
+
+$client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
 
 if (isset($_POST['text'])) {
 
     $text = $_POST['text'];
 
-    // Return an Elasticsearch query based on what has been typed.
     $query = $client->search([
         'index' => 'dissertations',
         'size' => 10,
@@ -31,11 +35,9 @@ if (isset($_POST['text'])) {
 
     $suggestions = [];
 
-    // Push each of the results in the suggestions array.
     foreach($results as $r) {
         array_push($suggestions, $r['_source']['title']);
     }
 
-    // Encode the suggestions into a JSON array.
     print json_encode($suggestions);
 }

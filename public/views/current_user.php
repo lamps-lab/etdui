@@ -6,7 +6,6 @@ require_once '../../src/user.php';
 
 if (isset($_SESSION['user_id'])) {
 
-    // Set the current user.
     $user = new User();
     $user->query_by_id($_SESSION['user_id']);
 

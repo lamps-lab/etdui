@@ -59,10 +59,21 @@
                 <div class="modal-header">
                     <slot name="date">
                         <!-- Input boxes for publication date range. -->
-                        Date: <input type="text" placeholder="YYYY-MM-DD" id="date" name="date" required/>
+                        Date: <input type="text" placeholder="YYYY" id="date" name="date" required/>
                        
                     </slot>
                 </div>
+
+                <div class="modal-header">
+                    <slot name="img">
+                        <!-- Input box for the department. -->
+                        Upload PDF: <input type="file" upload_max_filesize = '10M' post_max_size = '10M' id="img" name="img" required/>
+                    </slot>
+                </div>
+
+
+
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">
                         Close

@@ -1,6 +1,5 @@
 <?php
 
-
 require '../../vendor/autoload.php';
 include '../../src/auth/redirect.php';
 include '../../src/auth/is_verified.php';
@@ -26,8 +25,8 @@ include 'header.php';
         <h1> <?php echo $list_name; ?> </h1><br>
 
         <form action="../../src/elasticsearch/export_list.php" method="POST">
-        <input type="hidden" name="list-name" value= <?php echo $list_name ?> ></input>
-        <button class="search" type="submit" name="export" value= <?php echo $_GET['list-id'] ?> style="margin-right: 10px;">Export to JSON</button>
+            <input type="hidden" name="list-name" value=<?php echo $list_name ?>></input>
+            <button class="search" type="submit" name="export" value=<?php echo $_GET['list-id'] ?> style="margin-right: 10px;">Export to JSON</button>
         </form>
 
         <br><br><br><br><br><br>
@@ -35,30 +34,28 @@ include 'header.php';
 
         $user_id = $_SESSION['user_id'];
 
-        // Query the list items that match the current list ID.
-        $query = "SELECT * FROM user_dissertation_list_items WHERE list='" . $list_id . "';";
+        $query = "SELECT * FROM user_list_items WHERE list='" . $list_id . "';";
 
         $results = $connection->query($query);
 
         $entry = 0;
 
-        // Iterate through all of the list items.
         while ($row = $results->fetch_assoc()) {
-            $client = Elasticsearch\ClientBuilder::create()->build();
+            include '../../constants.php';
+
+            $client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
 
             $dissertation = new Dissertation();
 
             $dissertation->set_id($row['dissertation_id']);
 
-            // Select the dissertation metadata from Elasticsearch by the ID.
             $params = [
                 'index' => 'dissertations',
                 'id' => $dissertation->get_id()
             ];
-        
+
             $response = $client->get($params);
-        
-            // Set all of the dissertation values.
+
             $dissertation->set_title($response['_source']['title']);
             $dissertation->set_author($response['_source']['contributor_author']);
             $dissertation->set_abstract($response['_source']['description_abstract']);

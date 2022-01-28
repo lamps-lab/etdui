@@ -2,14 +2,11 @@
 
 require '../../vendor/autoload.php';
 
-/**
- * Creates a Elasticsearch query with the inputted search.
- */
 function text_query($client, $search)
 {
     $query = $client->search([
         'index' => 'dissertations',
-        'size' => 5000,
+        'size' => 10000,
         'body' => [
             'query' => [
                 'bool' => [
@@ -44,13 +41,11 @@ function text_query($client, $search)
     return $query;
 }
 
-/**
- * Creates an Elasticsearch date query.
- */
-function date_query($client, $search) {
+function date_query($client, $search)
+{
     $query = $client->search([
         'index' => 'dissertations',
-        'size' => 5000,
+        'size' => 10000,
         'body' => [
             'query' => [
                 'bool' => [
@@ -73,7 +68,12 @@ function date_query($client, $search) {
 function normal_search($search)
 {
     include '../../constants.php';
-    $client = Elasticsearch\ClientBuilder::create()->build();
+
+    // ini_set('display_errors', 1);
+    // ini_set('display_startup_errors', 1);
+    // error_reporting(E_ALL);
+    
+    $client = Elasticsearch\ClientBuilder::create()->setHosts(ELASTICSEARCH_HOST)->build();
 
     $query = [];
 

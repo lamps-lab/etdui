@@ -15,7 +15,7 @@ include '../../src/mysql_login.php';
         <?php
 
         $user_id = $_SESSION['user_id'];
-        
+
         $query = "SELECT * FROM favorites WHERE user='"
             . $user_id . "';";
 

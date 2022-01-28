@@ -48,23 +48,17 @@ class Tag
         return $this->name;
     }
 
-    /**
-     * Find all tags based on the user ID and dissertation ID.
-     */
     function query_tags()
     {
         include '../../src/mysql_login.php';
 
-        $query = "SELECT * FROM dissertation_tags WHERE user='" . $this->get_user() .
+        $query = "SELECT * FROM tags WHERE user='" . $this->get_user() .
             "' AND dissertation='" . $this->get_dissertation_id() . "' AND name='" .
             $this->get_name() . "';";
 
         return $connection->query($query);
     }
 
-    /**
-     * Verifies if dissertation has at least one tag.
-     */
     function has_tag()
     {
         $result = $this->query_tags();
@@ -72,14 +66,11 @@ class Tag
         return ($result->num_rows > 0);
     }
 
-    /**
-     * Adds tag to a dissertation in the SQL table.
-     */
     function add_tag()
     {
         include '../../src/mysql_login.php';
 
-        $sql = "INSERT INTO dissertation_tags(user, dissertation, name) VALUES ('" .
+        $sql = "INSERT INTO tags(user, dissertation, name) VALUES ('" .
             $this->get_user() . "', '" . $this->get_dissertation_id() .
             "', '" . $this->get_name() . "');";
 
@@ -92,14 +83,11 @@ class Tag
         }
     }
 
-    /**
-     * Removes tag from dissertation.
-     */
     function remove_tag()
     {
         include '../../src/mysql_login.php';
 
-        $sql = "DELETE FROM dissertation_tags WHERE id='" . $this->get_id() . "';";
+        $sql = "DELETE FROM tags WHERE id='" . $this->get_id() . "';";
 
         if ($connection->query($sql)) {
             return true;

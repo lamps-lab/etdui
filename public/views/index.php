@@ -10,23 +10,25 @@
             </div>
             <form class="search" autocomplete="off" action="../../src/elasticsearch/results.php" method="get">
                 <input type="text" placeholder="Search..." name="search" id="search" oninput="suggestResults('search')" required>
-                <button class="search" id="microphone" type="button" onclick="speechToText('microphone', 'search')">&#127908</button>
                 <button class="search" type="submit" name="normal_search"> &#128269</button>
+                <button class="search" id="microphone" type="button" onclick="speechToText('microphone', 'search')">&#127908</button>
             </form>
             <?php
             session_start();
-
             if (isset($_SESSION['user_id'])) {
-                // If a user is signed in, display the advanced search button and insert entry button to the user.
-                echo '<button type="button" class="advanced-search-button" data-toggle="modal" data-target="#advanced-search-modal">
+                echo '<button type="button" class="advanced-search-button" style="width: 30%; margin-right: 5%;" data-toggle="modal" data-target="#advanced-search-modal">
                     Advanced Search &#9881
                 </button>';
 
-                echo '<button type="button" style="float: right;" class="advanced-search-button" data-toggle="modal" data-target="#insert-entry-modal">
+                echo '<button type="button" style="width: 30%;" class="advanced-search-button" data-toggle="modal" data-target="#insert-entry-modal">
                 Insert Entry
                 </button>';
+
+                echo "<form action='services.php'>";
+                echo '<button style="width: 30%; margin-left: 5%;" class="advanced-search-button">Services</button>';
+                echo "</form>";
+
             } else {
-                // Otherwise, only display the advanced search button.
                 echo '<button type="button" style="width: 70%; float: none;" class="advanced-search-button" data-toggle="modal" data-target="#advanced-search-modal">
                     Advanced Search &#9881
                 </button>';
@@ -38,6 +40,7 @@
         </div>
     </div>
     <script src="../js/searchFunctions.js"></script>
+
 </body>
 
 </html>

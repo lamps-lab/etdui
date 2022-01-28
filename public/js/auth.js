@@ -158,6 +158,8 @@ function logIn() {
             },
             success: function(data) {
 
+                console.log(data);
+
                 // If the code returned is 0, the email entered has not been
                 // registered.
                 if (data == 0) {

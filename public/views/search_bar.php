@@ -6,8 +6,5 @@
         <button class="search" id="microphone" type="button" onclick="speechToText('microphone', 'search')">&#127908;</button>
     </form>
     &nbsp;
-    <button type="button" style="width: 20%;" class="advanced-search-button" data-toggle="modal" data-target="#advanced-search-modal">
-        Advanced Search &#9881
-    </button>
 
     <br><br><br><br>
