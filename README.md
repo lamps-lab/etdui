@@ -137,6 +137,14 @@ and replace it with
 ```php
 $captcha_confirmed = true;
 ```
+
+The SITE_KEY and SECRET_KEY variables are ReCAPTCHA key values. Please follow the directions in the following tutorial to set them up.
+* https://www.iqcomputing.com/support/articles/generate-google-recaptcha-v2-keys/
+
+
+The EMAIL variable is the email for sending user verification emails and the PASSWORD variable is the app password for that email. To set up an app password, please follow these instructions:
+* https://support.google.com/mail/answer/185833?hl=en
+
 ## Using the website
 Move the clone directory to /var/www/html/
 
