@@ -10,7 +10,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="../../src/elasticsearch/figure_extraction_action.php" method="POST" enctype="multipart/form-data">
+            <form action="./../src/figure_extraction/figure_extraction_action.php" method="POST" enctype="multipart/form-data">
                 <div class="modal-header">
                     <slot name="img">
                         <!-- Input box for the department. -->
