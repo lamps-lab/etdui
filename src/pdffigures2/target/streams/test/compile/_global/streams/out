@@ -1,0 +1,49 @@
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:3:20: object common is not a member of package org.allenai[0m
+[0m[[0m[31merror[0m] [0m[0mimport org.allenai.common.testkit.UnitSpec[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:9:37: not found: type UnitSpec[0m
+[0m[[0m[31merror[0m] [0m[0mclass TestExtractionFilters extends UnitSpec {[0m
+[0m[[0m[31merror[0m] [0m[0m                                    ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:28:26: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "Page boundary filter" should "filter out bad extractions" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:35:20: value === is not a member of Iterable[org.allenai.pdffigures2.Figure][0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures === Nil)[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:43:27: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "Graphics split filter" should "filter out bad extractions" in {[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:50:20: value === is not a member of Iterable[org.allenai.pdffigures2.Figure][0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures === Nil)[0m
+[0m[[0m[31merror[0m] [0m[0m                   ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:56:13: value should is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m  "Figures" should "all be extracted" in {[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:63:27: value === is not a member of Int[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures.length === 2)[0m
+[0m[[0m[31merror[0m] [0m[0m                          ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:64:31: value === is not a member of org.allenai.pdffigures2.FigureType.FigureType[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(0).figType === FigureType.Table)[0m
+[0m[[0m[31merror[0m] [0m[0m                              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:65:28: value === is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(0).name === "1")[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:66:28: value === is not a member of Int[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(0).page === 4)[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:68:26: value === is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m      figures(0).caption === "Table 1: Over a set of ten relations, TEXTRUNNER achieved a 33% lower error rate than KNOWITALL, while finding approximately as many correct extractions."[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:70:31: value === is not a member of org.allenai.pdffigures2.FigureType.FigureType[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(1).figType === FigureType.Figure)[0m
+[0m[[0m[31merror[0m] [0m[0m                              ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:71:28: value === is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(1).name === "1")[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:72:28: value === is not a member of Int[0m
+[0m[[0m[31merror[0m] [0m[0m    assert(figures(1).page === 4)[0m
+[0m[[0m[31merror[0m] [0m[0m                           ^[0m
+[0m[[0m[31merror[0m] [0m[0m/home/wshields/work/test/pdffigures2/src/test/scala/org/allenai/pdffigures2/TestExtractionFilters.scala:74:26: value === is not a member of String[0m
+[0m[[0m[31merror[0m] [0m[0m      figures(1).caption === "Figure 1: Overview of the tuples extracted from 9 million Web page corpus. 7.8 million well-formed tuples are found having probability ≥ 0.8. Of those, TEXTRUNNER finds 1 million concrete tuples with arguments grounded in particular real-world entities, 88.1% of which are correct, and 6.8 million tuples reflecting abstract assertions, 79.2% of which are correct."[0m
+[0m[[0m[31merror[0m] [0m[0m                         ^[0m
+[0m[[0m[31merror[0m] [0m[0m16 errors found[0m

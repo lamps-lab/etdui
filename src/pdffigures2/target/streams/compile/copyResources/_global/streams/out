@@ -1,0 +1,2 @@
+[debug] Copy resource mappings: 
+[debug] 	(/var/www/html/ETD-Search/src/pdffigures2/src/main/resources/logback.xml,/var/www/html/ETD-Search/src/pdffigures2/target/scala-2.12/classes/logback.xml)
