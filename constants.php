@@ -14,3 +14,5 @@ define('ELASTICSEARCH_HOST', [""]);
 define('FIGURE_EXTRACTION_SERVICE_PATH', '/mnt/jwu/penzias/secure_html/sampanna/');
 define('ADMIN_PASSWORD', '313ctr1c1+y');
 define('ADMIN', 'admin');
+define('PDFFIGURES2', '/mnt/jwu/penzias/secure_html/ETD-Search/src/pdffigures2');
+define('USER_FILES', '/mnt/jwu/penzias/secure_html/ETD-Search/user_files/');
