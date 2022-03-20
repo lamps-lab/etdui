@@ -148,7 +148,7 @@ The EMAIL variable is the email for sending user verification emails and the PAS
 ## Using the website
 Move the clone directory to /var/www/html/
 
-Once running, access the website through: http://127.0.0.1/etdui/public/views/index.php or http://localhost/ETD-Search/public/views/index.php
+Once running, access the website through: http://127.0.0.1/etdui/public/views/index.php or http://localhost/etdui/public/views/index.php
 
 Before entering the website, you must enter the admin password: 313ctr1c1+y
 
