@@ -19,6 +19,31 @@ Run Elasticsearch by typing:
 sudo service elasticsearch start
 ```
 
+Install Imagick
+```
+sudo apt-get install php-imagick
+```
+Next, you need to edit the policy.xml file in /etc/Imagemagick-6/ to allow PDF to image conversion in one of the figure extraction services
+```
+sudo vim /etc/Imagemagick-6/policy.xml
+```
+Comment the following line
+```
+<!-- <policy domain="coder" rights="none" pattern="MVG" /> -->
+```
+Rewrite this line
+```
+<policy domain="coder" rights="none" pattern="PDF" />
+```
+to
+```
+<policy domain="coder" rights="read|write" pattern="PDF" />
+```
+Save the changes to the policy.xml. You may need to restart apache2:
+```
+sudo service apache2 restart
+```
+
 Download the [zip file](https://drive.google.com/file/d/1cn9WzmkP7g1A_Za2GxUqFnxjaGSshiJZ/view?usp=sharing) and then extract it. Next, go into the extracted directory and run the following command:
 ```bash
 ./script
@@ -117,7 +142,13 @@ This website is being hosted on a server, which requires certain configurations.
 
 For example, SQL_SERVER, SQL_USERNAME, and SQL_PASSWORD should be based on where you are running your SQL server and your SQL user credentials. If you're running it locally, SQL_SERVER should most likely be set to "localhost". Same with Elasticsearch.
 
-The ReCAPTCHA feature requires you to be using a URL that starts with 127.0.0.1 instead of localhost. However, if you have trouble getting this to work right, you can go to src/auth/login_action.php and edit the script so that it doesn't check the ReCAPTCHA. You do this by removing the
+The ReCAPTCHA feature requires you to be using a URL that starts with 127.0.0.1 instead of localhost.
+You can do this by typing the following command in the terminal:
+```bash
+# etdui is the name of the project
+php -S localhost:8000 -t etdui
+```
+ However, if you have trouble getting this to work right, you can go to src/auth/login_action.php and edit the script so that it doesn't check the ReCAPTCHA. You do this by removing the
 ```php
 if ($response->success) {
 }
@@ -149,6 +180,7 @@ The EMAIL variable is the email for sending user verification emails and the PAS
 Move the clone directory to /var/www/html/
 
 Once running, access the website through: http://127.0.0.1/etdui/public/views/index.php or http://localhost/etdui/public/views/index.php
+
 
 Before entering the website, you must enter the admin password: 313ctr1c1+y
 
