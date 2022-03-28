@@ -28,13 +28,12 @@ if (isset($_FILES['fileToUpload'])) {
 
         if (!file_exists($file_dir)) {
             mkdir($file_dir);
+        }
 
-            $file_results_dir = $file_dir . "/" . $file_count . "_results";
+        $file_results_dir = $file_dir . "/" . $file_count . "_results";
             
-            if (!file_exists($file_results_dir)) {
-                mkdir($file_results_dir);
-            }
-
+        if (!file_exists($file_results_dir)) {
+            mkdir($file_results_dir);
         }
 
         move_uploaded_file($file_tmp, "$file_results_dir/$file_name.pdf");
