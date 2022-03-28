@@ -181,6 +181,8 @@ Move the clone directory to /var/www/html/
 
 Once running, access the website through: http://127.0.0.1/etdui/public/views/index.php or http://localhost/etdui/public/views/index.php
 
+If you ran the php -S localhost:8000 -t etdui command, access the website through http://127.0.0.1:8000/
+
 
 Before entering the website, you must enter the admin password: 313ctr1c1+y
 
